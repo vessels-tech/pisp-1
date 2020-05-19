@@ -25,9 +25,10 @@ npm install
 cd ./docker-local
 docker-compose up -d
 
+# TODO: wait for services to be healthy
+
 npm run reseed
 
-# TODO: wait for services to be healthy
 # TODO: environment config?
 npm run test:e2e
 ```
