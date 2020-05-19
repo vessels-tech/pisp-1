@@ -60,7 +60,11 @@ services:
       - "3002:3002"
     volumes:
       - ./docker/quoting-service/default.json:/opt/quoting-service/config/default.json
-    # TODO: healthcheck
+    healthcheck:
+      test: wget -q http://172.17.0.1:3002/health -O /dev/null || exit 1
+      timeout: 20s
+      retries: 30
+      interval: 15s
     extra_hosts:
       - "moja-simulator.local:172.17.0.1"
       - "simulator:172.17.0.1"
@@ -204,7 +208,7 @@ services:
     networks:
       - mojaloop-net
     healthcheck:
-      test: ["CMD" ,"/opt/kafka_2.12-2.3.0/bin/kafka-broker-api-versions.sh","--bootstrap-server","localhost:9092"]
+      test: ["CMD" ,"/opt/kafka_2.12-2.3.0/bin/kafka-broker-api-versions.sh","--bootstrap-server","172.17.0.1:9092"]
       timeout: 20s
       retries: 10
       start_period: 40s
