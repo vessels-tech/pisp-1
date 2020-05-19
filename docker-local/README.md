@@ -45,6 +45,7 @@ docker-compose ps
 
 It may take a little while for the services to healthy.
 
+
 ### Logging:
 
 Use `docker-compose logs -f` to tail the logs of any given container. 
@@ -63,7 +64,7 @@ docker-compose logs -f transaction-requests-service
 docker-compose logs -f pisp-backend  pisp-scheme-adapter pisp-redis
 ```
 
-
+[todo: update these]
 ```bash
 #Running the services separately in different terminals is recommended
 
