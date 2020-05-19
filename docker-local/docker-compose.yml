@@ -38,15 +38,12 @@ services:
   objstore:
     image: mongo:latest
     container_name: objstore
-    # Disable logging as it is far too verbose for debugging locally
-    logging:
-      driver: none
     ports:
       - "27017:27017"
     networks:
       - mojaloop-net
     healthcheck:
-      test: mongo localhost:27017/test --quiet 1
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5
@@ -102,9 +99,6 @@ services:
   mysql:
     image: mysql/mysql-server
     container_name: mysql
-    # Disable logging as it is far too verbose for debugging locally
-    logging:
-      driver: none
     ports:
       - "3307:3306"
     volumes:
