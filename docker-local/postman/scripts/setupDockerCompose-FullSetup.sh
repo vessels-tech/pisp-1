@@ -10,6 +10,6 @@ ${DIR}/setupDockerCompose-PISP.sh
 ${DIR}/setupDockerCompose-DFSP-SIMULATOR.sh
 ${DIR}/setupDockerCompose-DFSP-A-MSISDN.sh
 ${DIR}/setupDockerCompose-DFSP-B-MSISDN.sh
-${DIR}/setupDockerCompose-PISP-MSISDN.sh
 ${DIR}/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh
+${DIR}/setupDockerCompose-PISP-MSISDN.sh
 ${DIR}/setupDockerCompose-dfsp-backend-parties.sh

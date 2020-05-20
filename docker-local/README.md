@@ -211,7 +211,7 @@ It will create a new participant with its endpoints and some init data. For this
 | `initialPosition`     | `0` |`
 
 ```bash
-./scripts/setupDockerCompose-dfspa.sh`
+./scripts/setupDockerCompose-DFSP-A.sh
 ```
 
 #### 6. Create DFSP B(use SDK + backend)
@@ -270,7 +270,7 @@ Register a new MSISDN for this dfsp with this initial data
 
 
 ```bash
-./scripts/setupDockerCompose-dfspa-MSISDN.sh
+./scripts/setupDockerCompose-DFSP-A-MSISDN.sh
 ```
 
 #### 10. Add MSISDN (987654321) for DFSP B
@@ -332,12 +332,12 @@ Register a new MSISDN for this dfsp with this initial data
 > **Note: Restarting `docker-compose`**
 >
 > If you restart docker compose you'll need to re-run this command to setup ALS
->```bash
->./scripts/setupDockerCompose-DFSP-B-MSISDN.sh && \
->  ./scripts/setupDockerCompose-DFSP-A-MSISDN.sh && \
->  ./scripts/>setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh && \
->  ./scripts/setupDockerCompose-PISP-MSISDN.sh
->```
+```bash
+./scripts/setupDockerCompose-DFSP-B-MSISDN.sh && \
+  ./scripts/setupDockerCompose-DFSP-A-MSISDN.sh && \
+  ./scripts/>setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh && \
+  ./scripts/setupDockerCompose-PISP-MSISDN.sh
+```
 
 ## P2P Examples
 
