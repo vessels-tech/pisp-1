@@ -13,6 +13,9 @@ export type TestEnvType = {
     dfspa: string,
     dfspb: string,
     pisp: string,
+    dfspaSchemeAdapter: string,
+    dfspbSchemeAdapter: string,
+    pispSchemeAdapter: string,
   }
   currency: string,
   users: {
@@ -26,7 +29,10 @@ const TestEnv: TestEnvType = {
   baseUrls: {
     dfspa: 'http://localhost:9003',
     dfspb: 'http://localhost:10003',
-    pisp:  'http://localhost:11003'
+    pisp:  'http://localhost:11003',
+    dfspaSchemeAdapter: 'http://localhost:5002',
+    dfspbSchemeAdapter:  'http://localhost:11003',
+    pispSchemeAdapter: 'http://localhost:7002',
   },
   currency: 'USD',
   users: {

@@ -1,12 +1,10 @@
-
-/**
- * @name P2P Transfer
- * @description This is more of a sanity check so we know our environment is up and running 
- */
-
 import TestEnv from "./TestEnv"
 import axios from 'axios'
 
+/**
+ * @name P2PTransfer
+ * @description This is more of a sanity check so we know our environment is up and running 
+ */
 describe('Peer to Peer transfer', () => {
   it('Performs a P2P transfer from Alice -> Bob', async () => {
     // Arrange
