@@ -99,7 +99,7 @@ docker-compose up pisp-backend  pisp-scheme-adapter pisp-redis
 npm install -g newman
 ```
 
-* cd to the postman folder
+* cd to the `postman` folder
 
 * Use this convenience script to run all the setup scripts and forgo having to run the setup scripts individually.
 
