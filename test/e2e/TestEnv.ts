@@ -1,33 +1,44 @@
 
-//TODO: load these more intelligently to allow for different environments
+//TODO: load these more intelligently to allow for better 
+
+export type UserIdType = {
+  idType: 'MSISDN';
+  idValue: string;
+}
 
 export type TestEnvType = {
   amount: string,
   amountType: string,
-  baseUrl: string,
+  baseUrls: {
+    dfspa: string,
+    dfspb: string,
+    pisp: string,
+  }
   currency: string,
-  payerIdType: string,
-  payerIdValue: string,
-  payeeIdType: string,
-  payeeIdValue: string,
-  // note: string,
-  // homeTransactionId: string,
-  // transactionType: string,
+  users: {
+    [index: string]: UserIdType, 
+  }
 }
-
 
 const TestEnv: TestEnvType = {
   amount: '100',
   amountType: 'SEND',
-  baseUrl: 'http://localhost:9003',
+  baseUrls: {
+    dfspa: 'http://localhost:9003',
+    dfspb: 'http://localhost:10003',
+    pisp:  'http://localhost:11003'
+  },
   currency: 'USD',
-  payerIdType: 'MSISDN',
-  payerIdValue: '123456789',
-  payeeIdType: 'MSISDN',
-  payeeIdValue: '987654321',
-  // note: 'Test note',
-  // homeTransactionId: '123ABC',
-  // transactionType: 'TRANSFER',
+  users: {
+    alice: {
+      idType: 'MSISDN',
+      idValue: '123456789',
+    },
+    bob: {
+      idType: 'MSISDN',
+      idValue: '987654321',
+    }
+  }
 }
 
 export default TestEnv;

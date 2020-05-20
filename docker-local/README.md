@@ -423,7 +423,7 @@ curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/
 }
 ```
 
-### 2. Transfer USD 90 from MSIDNS 123456789 (DFSP A) to MSIDNS 333333333 (Simulator)
+### 2. Transfer USD 90 from MSISDN 123456789 (DFSP A) to MSISDN 333333333 (Simulator)
 
 ```bash
 curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/json'  -d '[

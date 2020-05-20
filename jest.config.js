@@ -4,8 +4,6 @@ module.exports = {
   verbose: true,
   preset: 'ts-jest',
   testEnvironment: 'node',
-  // TODO: reenable
-  // collectCoverage: true,
   collectCoverage: false,
   collectCoverageFrom: ['./src/**/*.ts'],
   coverageReporters: ['json', 'lcov', 'text'],
