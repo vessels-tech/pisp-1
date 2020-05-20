@@ -22,9 +22,15 @@ Integration tests
 ## Prerequisites
 - `docker` - `v18.06.0` or higher
 - `docker-compose`. We are using a compose file of `v3.7`. So you need at least `docker-compose` `v1.22`
+- `node` and `npm`. We are using `node v12.16.1` at the time of writing
 - `newman` You can install globally from npm if you want:
 ```bash
 npm install -g newman
+```
+
+or you can install the `node_modules` in the root of this directory
+```bash
+npm install
 ```
 
 - A hosts file with the following entries:
@@ -91,26 +97,26 @@ docker-compose up pisp-backend  pisp-scheme-adapter pisp-redis
 
 ## Create some initial data
 
-### Prerequisites
+### Set Up Seed Data
 
-* Install newman
-
-```
-npm install -g newman
-```
-
-* cd to the `postman` folder
-
-* Use this convenience script to run all the setup scripts and forgo having to run the setup scripts individually.
-
-```
-sh scripts/setupDockerCompose-FullSetup.sh
+#### 1. cd to `postman` directory
+```bash
+cd ./postman
 ```
 
-* Setup hub account
+#### 2. Run the FullSetup script
+Use this convenience script to run all the setup scripts and forgo having to run the setup scripts individually.
 
+```bash
+./scripts/setupDockerCompose-FullSetup.sh
 ```
-sh scripts/setupDockerCompose-HubAccount.sh
+> This script runs all of the below `setupDockerCompose*` scripts, so you can skip ahead to [Run P2P E2E tests](#14--run-p2p-e2e-tests.)
+
+
+#### 3. Setup hub account
+
+```bash
+./scripts/setupDockerCompose-HubAccount.sh
 ```
 
 ```
@@ -158,8 +164,10 @@ OSS-New-Deployment-FSP-Setup
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-```
-sh scripts/setupDockerCompose-OracleOnboarding.sh
+#### 4. Setup the oracle for ALS
+
+```bash
+./scripts/setupDockerCompose-OracleOnboarding.sh
 ```
 
 ```
@@ -187,9 +195,10 @@ OSS-New-Deployment-FSP-Setup
 │ total data received: 0B (approx)                              │
 ├───────────────────────────────────────────────────────────────┤
 │ average response time: 5.2s [min: 5.2s, max: 5.2s, s.d.: 0µs] │
+└───────────────────────────────────────────────────────────────┘
 ```
 
-### Create DFSP A (use SDK + backend)
+#### 5. Create DFSP A (use SDK + backend)
 
 It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
 
@@ -201,11 +210,11 @@ It will create a new participant with its endpoints and some init data. For this
 | `limit.value`   | `1000000` |
 | `initialPosition`     | `0` |`
 
-```
-$ sh scripts/setupDockerCompose-dfspa.sh`
+```bash
+./scripts/setupDockerCompose-dfspa.sh`
 ```
 
-### Create DFSP B(use SDK + backend)
+#### 6. Create DFSP B(use SDK + backend)
 
 It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
 
@@ -217,10 +226,10 @@ It will create a new participant with its endpoints and some init data. For this
 | `limit.value`   | `1000000` |
 | `initialPosition`     | `0` |`
 
+```bash
+./scripts/setupDockerCompose-DFSP-B.sh
 ```
-$ sh scripts/setupDockerCompose-DFSP-B.sh
-```
-### Create a Simulator DFSP (implement mojaloop api)
+#### 7. Create a Simulator DFSP (implement mojaloop api)
 
 It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
 
@@ -232,10 +241,10 @@ It will create a new participant with its endpoints and some init data. For this
 | `limit.value`   | `1000000` |
 | `initialPosition`     | `0` |`
 
+```bash
+./scripts/setupDockerCompose-DFSP-SIMULATOR.sh
 ```
-$ sh scripts/setupDockerCompose-DFSP-SIMULATOR.sh
-```
-### Create PISP (use SDK + backend)
+#### 8. Create PISP (use SDK + backend)
 
 It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
 
@@ -247,11 +256,11 @@ It will create a new participant with its endpoints and some init data. For this
 | `limit.value`   | `1000000` |
 | `initialPosition`     | `0` |`
 
-```
-$ sh scripts/setupDockerCompose-PISP.sh
+```bash
+./scripts/setupDockerCompose-PISP.sh
 ```
 
-### Add MSISDN (123456789) for DFSP A
+#### 9. Add MSISDN (123456789) for DFSP A
 
 Register a new MSISDN for this dfsp with this initial data
 
@@ -260,11 +269,11 @@ Register a new MSISDN for this dfsp with this initial data
 | `currency`       | `USD`  |
 
 
-```
-$ sh scripts/setupDockerCompose-dfspa-MSISDN.sh
+```bash
+./scripts/setupDockerCompose-dfspa-MSISDN.sh
 ```
 
-### Add MSISDN (987654321) for DFSP B
+#### 10. Add MSISDN (987654321) for DFSP B
 
 Register a new MSISDN for this dfsp with this initial data
 
@@ -272,11 +281,11 @@ Register a new MSISDN for this dfsp with this initial data
 |-----------|---------|
 | `currency`       | `USD`  |
 
-```
-$ sh scripts/setupDockerCompose-DFSP-B-MSISDN.sh
+```bash
+./scripts/setupDockerCompose-DFSP-B-MSISDN.sh
 ```
 
-### Add MSISDN (333333333) for Simulator
+#### 11. Add MSISDN (333333333) for Simulator
 
 Register a new MSISDN for this dfsp with this initial data
 
@@ -284,11 +293,11 @@ Register a new MSISDN for this dfsp with this initial data
 |-----------|---------|
 | `currency`       | `USD`  |
 
-```
-$ sh scripts/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh
+```bash
+./scripts/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh
 ```
 
-### Add MSISDN (999999999) for PISP
+#### 12. Add MSISDN (999999999) for PISP
 
 Register a new MSISDN for this dfsp with this initial data
 
@@ -296,36 +305,38 @@ Register a new MSISDN for this dfsp with this initial data
 |-----------|---------|
 | `currency`       | `USD`  |
 
-```
-$ sh scripts/setupDockerCompose-PISP-MSISDN.sh
-```
-
-### Add parties to the backend's of DFSP A , DFSP B and PISP.
-
-
-```
-$ sh scripts/setupDockerCompose-dfsp-backend-parties.sh
+```bash
+./scripts/setupDockerCompose-PISP-MSISDN.sh
 ```
 
-### Run P2P E2E tests.
+#### 13. Add parties to the backends of DFSP A, DFSP B and PISP.
 
-
-```
-$ sh scripts/testE2ETransfers.sh
-```
-
-### Run PISP E2E tests.
-
-
-```
-$ sh scripts/test-E2E-transaction-req-initiated-by-PISP.sh
+```bash
+./scripts/setupDockerCompose-dfsp-backend-parties.sh
 ```
 
-### If you restart docker compose you'll need to re-run this command to setup ALS
+#### 13. Run P2P E2E tests.
 
+
+```bash
+./scripts/testE2ETransfers.sh
 ```
-sh scripts/setupDockerCompose-DFSP-B-MSISDN.sh && sh scripts/setupDockerCompose-DFSP-A-MSISDN.sh && sh scripts/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh && sh scripts/setupDockerCompose-PISP-MSISDN.sh
+
+#### 14. Run PISP E2E tests.
+
+```bash
+./scripts/test-E2E-transaction-req-initiated-by-PISP.sh
 ```
+
+
+> **Note: Restarting `docker-compose`**
+> If you restart docker compose you'll need to re-run this command to setup ALS
+>```bash
+>./scripts/setupDockerCompose-DFSP-B-MSISDN.sh && \
+>  ./scripts/setupDockerCompose-DFSP-A-MSISDN.sh && \
+>  ./scripts/>setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh && \
+>  ./scripts/setupDockerCompose-PISP-MSISDN.sh
+>```
 
 ## P2P Examples
 
