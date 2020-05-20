@@ -9,7 +9,7 @@
   },
   "scripts": {
     "reseed": "echo \"TODO: seed environment\"",
-    "test:e2e": "echo \"Error: no test specified\" && exit 1",
+    "test:e2e": "jest --testMatch '**/test/e2e/**/*.(test|spec).ts'",
     "test:unit": "jest --testMatch '**/test/unit/**/*.(test|spec).ts'"
   },
   "repository": {
