@@ -110,7 +110,7 @@ Use this convenience script to run all the setup scripts and forgo having to run
 ```bash
 ./scripts/setupDockerCompose-FullSetup.sh
 ```
-> This script runs all of the below `setupDockerCompose*` scripts, so you can skip ahead to [Run P2P E2E tests](#14--run-p2p-e2e-tests.)
+> This script runs all of the below `setupDockerCompose*` scripts, so you can skip ahead to [Run P2P E2E tests](#13-run-p2p-e2e-tests)
 
 
 #### 3. Setup hub account
@@ -330,6 +330,7 @@ Register a new MSISDN for this dfsp with this initial data
 
 
 > **Note: Restarting `docker-compose`**
+>
 > If you restart docker compose you'll need to re-run this command to setup ALS
 >```bash
 >./scripts/setupDockerCompose-DFSP-B-MSISDN.sh && \
@@ -340,9 +341,9 @@ Register a new MSISDN for this dfsp with this initial data
 
 ## P2P Examples
 
-* Transfer USD 100 from MSIDNS 123456789 (DFSP A) to MSIDNS 987654321 (DFSP B)
+### 1. Transfer USD 100 from MSISDN 123456789 (DFSP A) to MSISDN 987654321 (DFSP B)
 
-```
+```bash
 curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/json'  -d '[
     {
         "name": "scenario1",
@@ -367,8 +368,8 @@ curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/
 ]'
 ```
 
-### Response: Transfer was completed
-```
+#### Response: Transfer was completed
+```json
 {
     "scenario1": {
         "result": {
@@ -422,9 +423,9 @@ curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/
 }
 ```
 
-* Transfer USD 90 from MSIDNS 123456789 (DFSP A) to MSIDNS 333333333 (Simulator)
+### 2. Transfer USD 90 from MSIDNS 123456789 (DFSP A) to MSIDNS 333333333 (Simulator)
 
-```
+```bash
 curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/json'  -d '[
   {
     "name": "scenario1",
@@ -448,10 +449,15 @@ curl -v -X POST http://localhost:9003/scenarios   -H 'Content-Type: application/
   }
 ]'
 ```
-## PISP Transaction Request Examples
-* 1. The HTTP request `POST /requestToPay` has two stages, Party lookup and initiate Transaction Request
 
-```
+## PISP Transaction Request Examples
+
+
+### 1. `POST /requestToPay`
+
+> Note: The HTTP request `POST /requestToPay` has two stages, (1) Party Lookup and (2) Initiate Transaction Request
+
+```bash
 curl -v  -X  POST http://localhost:7002/requestToPay  -H  'Content-Type: application/json'  -d  '{
     "homeTransactionId": "f0cf62e7-fb15-46a5-9525-37f934d98fcd",
     "from": {
@@ -472,8 +478,8 @@ curl -v  -X  POST http://localhost:7002/requestToPay  -H  'Content-Type: applica
 }'
 ```
 
-##### POST /requestToPay Response:
-````
+##### `POST /requestToPay` Response:
+````json
 {
     "homeTransactionId": "f0cf62e7-fb15-46a5-9525-37f934d98fcd",
     "from": {
@@ -502,8 +508,13 @@ curl -v  -X  POST http://localhost:7002/requestToPay  -H  'Content-Type: applica
     "requestToPayState": "RECEIVED"
 }
 ````
-* 2. The HTTP request `POST /requestToPayTransfer` is used to request the movement of funds from payer DFSP to payee DFSP.The underlying Mojaloop API has three stages for money transfer:Quotation , Authorization and Transfer
-```
+
+### 2. `POST /requestToPayTransfer`
+
+> The HTTP request `POST /requestToPayTransfer` is used to request the movement of funds from payer DFSP to payee DFSP.
+> The underlying Mojaloop API has three stages for money transfer: (1) Quotation, (2) Authorization and (3) Transfer
+
+```bash
 curl -v  -X  POST http://localhost:5002/requestToPayTransfer  -H  'Content-Type: application/json' -d '{
   "requestToPayTransactionId": "70c522c9-0880-40b1-b28f-0c567e0b39aa",
   "from": {
@@ -524,8 +535,9 @@ curl -v  -X  POST http://localhost:5002/requestToPayTransfer  -H  'Content-Type:
   "note": "pisp test payment"
 }'
 ```
-##### POST /requestToPayTransfer Response:
-```
+
+##### `POST /requestToPayTransfer` Response:
+```json
 {
     "requestToPayTransactionId": "70c522c9-0880-40b1-b28f-0c567e0b39aa",
     "from": {
@@ -553,8 +565,7 @@ curl -v  -X  POST http://localhost:5002/requestToPayTransfer  -H  'Content-Type:
             "currency": "USD"
         },
         "expiration": "2020-05-12T09:26:13.967Z",
-        "ilpPacket": "AYICXAAAAAAAAAcIGGcuZGZzcGIubXNpc2RuLjk4NzY1NDMyMYICN2V5SjBjbUZ1YzJGamRHbHZia2xrSWpvaVlXSXpOVE15WXpZdE4yTmhNeTAwTmpGa0xXSXlZamt0TkRJek5UQTROV1UzWmpabElpd2ljWFZ2ZEdWSlpDSTZJakUzTkRZM01qTTJMV0kyWm1VdE5EUTROeTFpTWpGa0xXUmlPV1F6TjJaa09URXlPQ0lzSW5CaGVXVmxJanA3SW5CaGNuUjVTV1JKYm1adklqcDdJbkJoY25SNVNXUlVlWEJsSWpvaVRWTkpVMFJPSWl3aWNHRnlkSGxKWkdWdWRHbG1hV1Z5SWpvaU9UZzNOalUwTXpJeElpd2labk53U1dRaU9pSmtabk53WWlKOWZTd2ljR0Y1WlhJaU9uc2ljR0Z5ZEhsSlpFbHVabThpT25zaWNHRnlkSGxKWkZSNWNHVWlPaUpOVTBsVFJFNGlMQ0p3WVhKMGVVbGtaVzUwYVdacFpYSWlPaUl4TWpNME5UWTNPRGtpTENKbWMzQkpaQ0k2SW1SbWMzQmhJbjE5TENKaGJXOTFiblFpT25zaVlXMXZkVzUwSWpvaU1UZ2lMQ0pqZFhKeVpXNWplU0k2SWxWVFJDSjlMQ0owY21GdWMyRmpkR2x2YmxSNWNHVWlPbnNpYzJObGJtRnlhVzhpT2lKUVFWbE5SVTVVSWl3aWFXNXBkR2xoZEc5eUlqb2lVRUZaUlVVaUxDSnBibWwwYVdGMGIzSlVlWEJsSWpvaVFsVlRTVTVGVTFNaWZYMAA",
-        "condition": "AO5FG1LtEt-NHakXIQoTQVjfnlmNFh6UFRBbW93FVDk",
+        "ilpPacket": "<removed for brevity>",
         "payeeFspFee": {
             "amount": "0",
             "currency": "USD"
@@ -567,14 +578,19 @@ curl -v  -X  POST http://localhost:5002/requestToPayTransfer  -H  'Content-Type:
     "quoteResponseSource": "dfspb"
 }
 ```
-* 3. The HTTP request `POST /requestToPayTransfer/{requestToPayTransactionId}:` is used to Continues a transfer that has paused at the authorization stage in order to accept quote
-```
-curl -v  -X  POST http://localhost:5002/requestToPayTransfer/70c522c9-0880-40b1-b28f-0c567e0b39aa  -H  'Content-Type: application/json'  -d  '{
+
+### 3. `POST /requestToPayTransfer/{requestToPayTransactionId}:`
+
+>The HTTP request `POST /requestToPayTransfer/{requestToPayTransactionId}` is used to Continues a transfer that has paused at the authorization stage in order to accept quote
+
+```bash
+curl -v  -X  \ POST http://localhost:5002/requestToPayTransfer/70c522c9-0880-40b1-b28f-0c567e0b39aa  -H  'Content-Type: application/json'  -d  '{
        "acceptQuote": true
 }'
-````
-##### POST /requestToPayTransfer/{requestToPayTransactionId} Response:
+
 ```
+##### `POST /requestToPayTransfer/{requestToPayTransactionId}` Response:
+```json
 {
     "requestToPayTransactionId": "70c522c9-0880-40b1-b28f-0c567e0b39aa",
     "from": {
@@ -602,8 +618,7 @@ curl -v  -X  POST http://localhost:5002/requestToPayTransfer/70c522c9-0880-40b1-
             "currency": "USD"
         },
         "expiration": "2020-05-12T09:26:13.967Z",
-        "ilpPacket": "AYICXAAAAAAAAAcIGGcuZGZzcGIubXNpc2RuLjk4NzY1NDMyMYICN2V5SjBjbUZ1YzJGamRHbHZia2xrSWpvaVlXSXpOVE15WXpZdE4yTmhNeTAwTmpGa0xXSXlZamt0TkRJek5UQTROV1UzWmpabElpd2ljWFZ2ZEdWSlpDSTZJakUzTkRZM01qTTJMV0kyWm1VdE5EUTROeTFpTWpGa0xXUmlPV1F6TjJaa09URXlPQ0lzSW5CaGVXVmxJanA3SW5CaGNuUjVTV1JKYm1adklqcDdJbkJoY25SNVNXUlVlWEJsSWpvaVRWTkpVMFJPSWl3aWNHRnlkSGxKWkdWdWRHbG1hV1Z5SWpvaU9UZzNOalUwTXpJeElpd2labk53U1dRaU9pSmtabk53WWlKOWZTd2ljR0Y1WlhJaU9uc2ljR0Z5ZEhsSlpFbHVabThpT25zaWNHRnlkSGxKWkZSNWNHVWlPaUpOVTBsVFJFNGlMQ0p3WVhKMGVVbGtaVzUwYVdacFpYSWlPaUl4TWpNME5UWTNPRGtpTENKbWMzQkpaQ0k2SW1SbWMzQmhJbjE5TENKaGJXOTFiblFpT25zaVlXMXZkVzUwSWpvaU1UZ2lMQ0pqZFhKeVpXNWplU0k2SWxWVFJDSjlMQ0owY21GdWMyRmpkR2x2YmxSNWNHVWlPbnNpYzJObGJtRnlhVzhpT2lKUVFWbE5SVTVVSWl3aWFXNXBkR2xoZEc5eUlqb2lVRUZaUlVVaUxDSnBibWwwYVdGMGIzSlVlWEJsSWpvaVFsVlRTVTVGVTFNaWZYMAA",
-        "condition": "AO5FG1LtEt-NHakXIQoTQVjfnlmNFh6UFRBbW93FVDk",
+        "ilpPacket": "<removed for brevity>",
         "payeeFspFee": {
             "amount": "0",
             "currency": "USD"
