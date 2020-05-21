@@ -6,7 +6,7 @@ networks:
 
 services:
   central-ledger:
-    image: mojaloop/central-ledger:v10.1.1
+    image: mojaloop/central-ledger:v9.3.0-hotfix.1
     container_name: central-ledger
     command: sh -c "/opt/central-ledger/wait4/wait4.js central-ledger && node src/api/index.js"
     ports:
@@ -50,7 +50,7 @@ services:
       start_period: 40s
 
   quoting-service:
-    image: "mojaloop/quoting-service:v10.1.0"
+    image: "mojaloop/quoting-service:v9.3.2-snapshot"
     container_name: quoting-service
     networks:
       - mojaloop-net
@@ -72,7 +72,7 @@ services:
       - "simulator.local:172.17.0.1"
 
   ml-api-adapter:
-    image: mojaloop/ml-api-adapter:v10.1.1
+    image: mojaloop/ml-api-adapter:v9.3.0
     container_name: ml-api-adapter
     command: sh -c "/opt/ml-api-adapter/wait4/wait4.js ml-api-adapter && node src/api/index.js"
     ports:
@@ -123,7 +123,7 @@ services:
       interval: 30s
 
   simulator:
-    image: mojaloop/simulator:v9.5.0
+    image: mojaloop/simulator:v9.3.2
     container_name: simulator
     ports:
       - "8444:8444"
@@ -161,7 +161,7 @@ services:
       - "transaction-request-service:172.17.0.1"
 
   transaction-requests-service:
-    image: mojaloop/transaction-requests-service:v10.1.0
+    image: mojaloop/transaction-requests-service:v9.3.0
     container_name: transaction-requests-service
     ports:
       - "4003:4003"
@@ -212,7 +212,7 @@ services:
       interval: 30s
 
   central-settlement:
-    image: mojaloop/central-settlement:v9.5.0
+    image: mojaloop/central-settlement:v9.2.1
     container_name: central-settlement
     command: sh -c "/opt/central-settlement/wait4/wait4.js central-settlement && node src/api/index.js"
     networks:
@@ -227,22 +227,28 @@ services:
        - ./docker/wait4:/opt/central-settlement/wait4
 
   account-lookup-service:
-    image: mojaloop/account-lookup-service:v10.1.0
+    image: mojaloop/account-lookup-service:v9.3.1
     container_name: account-lookup-service
-    command: sh -c "/opt/central-account-lookup-service/wait4/wait4.js account-lookup-service && node src/index.js server"
+    command: sh -c "/opt/account-lookup-service/wait4/wait4.js account-lookup-service && node src/index.js server"
     ports:
       - "4001:4001"
       - "4002:4002"
     environment:
-      - LOG_LEVEL=info
+      # - LOG_LEVEL=info
+      - LOG_LEVEL=debug
+      - ALS_DISPLAY_ROUTES=false
     networks:
       - mojaloop-net
     depends_on:
       - mysql-als
-      - central-ledger
+      # - central-ledger
     volumes:
        - ./docker/account-lookup-service/default.json:/opt/account-lookup-service/config/default.json
-       - ./docker/wait4:/opt/central-account-lookup-service/wait4
+       - ./docker/wait4:/opt/account-lookup-service/wait4
+       - /Users/ldaly/developer/vessels/mojaloop-github/account-lookup-service/src:/opt/account-lookup-service/src
+      #  This mount doesn't seem to work...
+       - /Users/ldaly/developer/vessels/mojaloop-github/account-lookup-service/node_modules/@mojaloop/central-services-shared/src:/opt/account-lookup-service/node_modules/@mojaloop/central-services-shared/src
+      #  - /Users/ldaly/developer/vessels/mojaloop-github/central-services-shared:/opt/account-lookup-service/src/node_modules/@mojaloop/central-services-shared
     healthcheck:
       test: wget -q http://172.17.0.1:4001/health -O /dev/null || exit 1
       timeout: 20s
