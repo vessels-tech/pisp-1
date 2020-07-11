@@ -35,22 +35,6 @@ npm run reseed
 npm run test:e2e
 ```
 
-Having issues with the `account-lookup-service`? 
-See [this issue](https://app.zenhub.com/workspaces/pisp-5e8457b05580fb04a7fd4878/issues/mojaloop/mojaloop/300) to keep track of this bug.
-
-There are some startup issues to do with the `account-lookup-service` and it's db. The current workaround is this:
-```bash
-docker-compose up mysql-als
-docker-compose up account-lookup-service
-
-# check to make sure it started nicely
-curl localhost:4002/health
-
-# then start all of the other services
-docker-compose up -d
-```
-
-
 
 > Note: You can also invoke these tests using Jest's `watch` mode:
 ```bash
@@ -59,16 +43,17 @@ npm run test:e2e -- --watch
 I
 
 ### Contract Tests
-> TODO: refer to [#302](https://app.zenhub.com/workspaces/pisp-5e8457b05580fb04a7fd4878/issues/mojaloop/mojaloop/302) for more information
 
->Proposed steps:
 ```bash
+# start the services
 cd ./docker-contract
 docker-compose up -d
 
-# wait for services to be healthy
-# TODO: environment config? Maybe?
 npm run test:contract
+```
+> Note: You can also invoke these tests using Jest's `watch` mode:
+```bash
+npm run test:contract -- --watch
 ```
 I
 

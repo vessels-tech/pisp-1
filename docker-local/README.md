@@ -16,6 +16,36 @@ Integration tests
 - [`postman`](./postman)
 
 ## Context, Parties, Backend components
+The purpose of this setup is to run an example of mojaloop arrangement locally using docker-compose.
+
+Services are composed in the testing layout as:
+
+- _MojaloopHub_ is a set of microservices and their dependencies, including:
+    - [central-ledger](https://github.com/mojaloop/central-ledger): (mysql, objstore (mongoDB), kafka)
+    - [account-lookup-service](https://github.com/mojaloop/account-lookup-service) - als: (mysql-als)
+    - [central-settlement](https://github.com/mojaloop/central-settlement): (mysql-als, kafka)
+    - [quoting-service](https://github.com/mojaloop/quoting-service): (central-ledger, mysql-als, kafka)
+    - [transaction-request-service](https://github.com/mojaloop/transaction-requests-service): (cental-ledger)
+    - [ml-api-adapter](https://github.com/mojaloop/ml-api-adapter): wrapper to expose MojaloopHub
+  > configuration folder: [docker](./docker)
+
+- _PISP_  is a new party in Mojaloop system to represent Payment Initiate System Provider where its dependencies are:
+    - pisp-backend: [mojaloop-simulator](https://github.com/mojaloop/mojaloop-simulator)
+    - pisp-scheme-adapter: [scheme-adapter](https://github.com/mojaloop/sdk-scheme-adapter)
+    - pisp-redis: redisDB
+  > configuration folder: [pisp](./pisp)
+
+- _DFSP A_ is a bank account holder
+    - dfspa-backend: [mojaloop-simulator](https://github.com/mojaloop/mojaloop-simulator)
+    - dfspa-scheme-adapter: [scheme-adapter](https://github.com/mojaloop/sdk-scheme-adapter)
+    - dfspa-redis: redisDB
+  > configuration folder: [dfsp_a](./dfsp_a)
+
+- _DFSP B_ is a bank account holder
+    - dfspb-backend: [mojaloop-simulator](https://github.com/mojaloop/mojaloop-simulator)
+    - dfspb-scheme-adapter: [scheme-adapter](https://github.com/mojaloop/sdk-scheme-adapter)
+    - dfspb-redis: redisDB
+  > configuration folder: [dfsp_b](./dfsp_b)
 
 ![components](./components_layout.png)
 
@@ -70,28 +100,6 @@ docker-compose logs -f transaction-requests-service
 docker-compose logs -f pisp-backend  pisp-scheme-adapter pisp-redis
 ```
 
-[todo: update these]
-```bash
-#Running the services separately in different terminals is recommended
-
-#Run
-
-docker-compose up account-lookup-service #t
-
-# Then close once the service is ready.
-# Proceed to stop account-lookup-service and proceed with the following commands.
-# ALS needs to be run initially so it setups properly.
-docker-compose up central-ledger
-docker-compose up quoting-service
-docker-compose up ml-api-adapter
-docker-compose up central-settlement
-docker-compose up account-lookup-service
-docker-compose up dfspa-scheme-adapter dfspa-backend
-docker-compose up dfspb-scheme-adapter dfspb-backend
-docker-compose up transaction-requests-service
-docker-compose up pisp-backend  pisp-scheme-adapter pisp-redis
-```
-
 ## Create some initial data
 
 ### Set Up Seed Data
@@ -105,7 +113,7 @@ cd ./postman
 Use this convenience script to run all the setup scripts and forgo having to run the setup scripts individually.
 
 ```bash
-./scripts/setupDockerCompose-FullSetup.sh
+./scripts/_00_seed_all.sh
 ```
 > This script runs all of the below `setupDockerCompose*` scripts, so you can skip ahead to [Run P2P E2E tests](#13-run-p2p-e2e-tests)
 
@@ -113,7 +121,7 @@ Use this convenience script to run all the setup scripts and forgo having to run
 #### 3. Setup hub account
 
 ```bash
-./scripts/setupDockerCompose-HubAccount.sh
+./scripts/_01_seed_hub_account.sh
 ```
 
 ```
@@ -164,7 +172,7 @@ OSS-New-Deployment-FSP-Setup
 #### 4. Setup the oracle for ALS
 
 ```bash
-./scripts/setupDockerCompose-OracleOnboarding.sh
+./scripts/_02_seed_oracle.sh
 ```
 
 ```
@@ -208,7 +216,7 @@ It will create a new participant with its endpoints and some init data. For this
 | `initialPosition`     | `0` |`
 
 ```bash
-./scripts/setupDockerCompose-DFSP-A.sh
+./scripts/_03_seed_dfspa.sh
 ```
 
 #### 6. Create DFSP B(use SDK + backend)
@@ -224,24 +232,10 @@ It will create a new participant with its endpoints and some init data. For this
 | `initialPosition`     | `0` |`
 
 ```bash
-./scripts/setupDockerCompose-DFSP-B.sh
+./scripts/_04_seed_dfspb.sh
 ```
-#### 7. Create a Simulator DFSP (implement mojaloop api)
 
-It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
-
-| Parameter | Value |
-|-----------|---------|
-| `name`       | `payeefsp`  |
-| `currency`       | `USD`  |
-| `limit.type`       | `NET_DEBIT_CAP` |
-| `limit.value`   | `1000000` |
-| `initialPosition`     | `0` |`
-
-```bash
-./scripts/setupDockerCompose-DFSP-SIMULATOR.sh
-```
-#### 8. Create PISP (use SDK + backend)
+#### 7. Create PISP (use SDK + backend)
 
 It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
 
@@ -254,7 +248,23 @@ It will create a new participant with its endpoints and some init data. For this
 | `initialPosition`     | `0` |`
 
 ```bash
-./scripts/setupDockerCompose-PISP.sh
+./scripts/_05_seed_pisp.sh
+```
+
+#### 8. Create a Simulator DFSP (implement mojaloop api)
+
+It will create a new participant with its endpoints and some init data. For this case, name, position, and limits will be
+
+| Parameter | Value |
+|-----------|---------|
+| `name`       | `payeefsp`  |
+| `currency`       | `USD`  |
+| `limit.type`       | `NET_DEBIT_CAP` |
+| `limit.value`   | `1000000` |
+| `initialPosition`     | `0` |`
+
+```bash
+./scripts/_06_seed_dfsp_simulator.sh
 ```
 
 #### 9. Add MSISDN (123456789) for DFSP A
@@ -267,7 +277,7 @@ Register a new MSISDN for this dfsp with this initial data
 
 
 ```bash
-./scripts/setupDockerCompose-DFSP-A-MSISDN.sh
+./scripts/_07_seed_dfsp_a_msisdn.sh
 ```
 
 #### 10. Add MSISDN (987654321) for DFSP B
@@ -279,7 +289,7 @@ Register a new MSISDN for this dfsp with this initial data
 | `currency`       | `USD`  |
 
 ```bash
-./scripts/setupDockerCompose-DFSP-B-MSISDN.sh
+./scripts/_08_seed_dfsp_b_msisdn.sh
 ```
 
 #### 11. Add MSISDN (333333333) for Simulator
@@ -291,7 +301,7 @@ Register a new MSISDN for this dfsp with this initial data
 | `currency`       | `USD`  |
 
 ```bash
-./scripts/setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh
+./scripts/_09_seed_dfsp_simulator_msisdn.sh
 ```
 
 #### 12. Add MSISDN (999999999) for PISP
@@ -303,13 +313,13 @@ Register a new MSISDN for this dfsp with this initial data
 | `currency`       | `USD`  |
 
 ```bash
-./scripts/setupDockerCompose-PISP-MSISDN.sh
+./scripts/_10_seed_pisp_msisdn.sh
 ```
 
 #### 13. Add parties to the backends of DFSP A, DFSP B and PISP.
 
 ```bash
-./scripts/setupDockerCompose-dfsp-backend-parties.sh
+./scripts/_11_seed_dfsp_backend_parties.sh
 ```
 
 #### 13. Run P2P E2E tests.
@@ -328,12 +338,12 @@ Register a new MSISDN for this dfsp with this initial data
 
 > **Note: Restarting `docker-compose`**
 >
-> If you restart docker compose you'll need to re-run this command to setup ALS
+> If you restart docker compose you'll need to re-run these scripts to setup ALS
 ```bash
-./scripts/setupDockerCompose-DFSP-B-MSISDN.sh && \
-  ./scripts/setupDockerCompose-DFSP-A-MSISDN.sh && \
-  ./scripts/>setupDockerCompose-DFSP-SIMULATOR-MSISDN.sh && \
-  ./scripts/setupDockerCompose-PISP-MSISDN.sh
+./scripts/_07_seed_dfsp_a_msisdn.sh
+./scripts/_08_seed_dfsp_b_msisdn.sh
+./scripts/_09_seed_dfsp_simulator_msisdn.sh
+./scripts/_10_seed_pisp_msisdn.sh
 ```
 
 ## P2P Examples

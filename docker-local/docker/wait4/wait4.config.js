@@ -29,7 +29,8 @@ module.exports = {
           rc: {
             namespace: 'CLEDG',
             configPath: '../config/default.json'
-          }
+          },
+          retries: 30
         },
         {
           description: 'MongoDB object store',
@@ -66,15 +67,29 @@ module.exports = {
         {
           description: 'MySQL ALS',
           uri: 'mysql-als:3306',
-
-          // example of using ncat instead knex,
-          // so we don\'t have to know db connection parameters
-          method: 'ncat'
+          method: 'mysql',
+          // customized RC setup
+          rc: {
+            namespace: 'ALS',
+            configPath: '../config/default.json'
+          },
+          retries: 30
         }
       ]
     },
     {
       name: 'ml-api-adapter',
+      wait4: [
+        {
+          uri: 'kafka:29092',
+          method: 'ncat',
+          // Seems to take longer on circleci to start up
+          retries: 30
+        }
+      ]
+    },
+    {
+      name: 'thirdparty-api-adapter',
       wait4: [
         {
           uri: 'kafka:29092',

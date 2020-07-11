@@ -6,7 +6,7 @@ networks:
 
 services:
   central-ledger:
-    image: mojaloop/central-ledger:v10.1.1
+    image: mojaloop/central-ledger:v10.3.1.2-pisp
     container_name: central-ledger
     command: sh -c "/opt/central-ledger/wait4/wait4.js central-ledger && node src/api/index.js"
     ports:
@@ -38,6 +38,9 @@ services:
   objstore:
     image: mongo:latest
     container_name: objstore
+    # Disable logging, this container is not that important and rather verbose
+    logging:
+      driver: none
     ports:
       - "27017:27017"
     networks:
@@ -72,7 +75,7 @@ services:
       - "simulator.local:172.17.0.1"
 
   ml-api-adapter:
-    image: mojaloop/ml-api-adapter:v10.1.1
+    image: mojaloop/ml-api-adapter:v10.3.1.2-pisp
     container_name: ml-api-adapter
     command: sh -c "/opt/ml-api-adapter/wait4/wait4.js ml-api-adapter && node src/api/index.js"
     ports:
@@ -161,7 +164,7 @@ services:
       - "transaction-request-service:172.17.0.1"
 
   transaction-requests-service:
-    image: mojaloop/transaction-requests-service:v10.1.0
+    image: mojaloop/transaction-requests-service:v10.4.0.0-pisp
     container_name: transaction-requests-service
     ports:
       - "4003:4003"
@@ -227,27 +230,29 @@ services:
        - ./docker/wait4:/opt/central-settlement/wait4
 
   account-lookup-service:
-    image: mojaloop/account-lookup-service:v10.1.0
+    image: mojaloop/account-lookup-service:v10.3.0.2-pisp
     container_name: account-lookup-service
-    command: sh -c "/opt/central-account-lookup-service/wait4/wait4.js account-lookup-service && node src/index.js server"
+    command: sh -c "/opt/account-lookup-service/wait4/wait4.js account-lookup-service && npm run migrate && node src/index.js server"
     ports:
       - "4001:4001"
       - "4002:4002"
     environment:
       - LOG_LEVEL=info
+      - ALS_DISPLAY_ROUTES=false
     networks:
       - mojaloop-net
     depends_on:
       - mysql-als
       - central-ledger
     volumes:
-       - ./docker/account-lookup-service/default.json:/opt/account-lookup-service/config/default.json
-       - ./docker/wait4:/opt/central-account-lookup-service/wait4
+      - ./docker/account-lookup-service/default.json:/opt/account-lookup-service/config/default.json
+      - ./docker/wait4:/opt/account-lookup-service/wait4
     healthcheck:
       test: wget -q http://172.17.0.1:4001/health -O /dev/null || exit 1
       timeout: 20s
       retries: 10
-      interval: 60s
+      start_period: 40s
+      interval: 30s
     extra_hosts:
       - "moja-simulator.local:172.17.0.1"
       - "simulator:172.17.0.1"
@@ -276,9 +281,9 @@ services:
       start_period: 40s
       interval: 30s
 
-## DFSP A
+  ## DFSP A
   dfspa-backend:
-    image: "mojaloop/mojaloop-simulator:v9.4.1"
+    image: "mojaloop/mojaloop-simulator:v9.4.1.1-pisp"
     container_name: dfspa-backend
     env_file: ./dfsp_a/dfsp_a_backend.env
     volumes:
@@ -291,7 +296,7 @@ services:
       - "dfspa-scheme-adapter:172.17.0.1"
 
   dfspa-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.11"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.11.1-pisp"
     container_name: dsfpa-scheme-adapter
     env_file: ./dfsp_a/dfsp_a_scheme_adapter.env
     volumes:
@@ -334,7 +339,7 @@ services:
 
   ## DFSP B
   dfspb-backend:
-    image: "mojaloop/mojaloop-simulator:v9.4.1"
+    image: "mojaloop/mojaloop-simulator:v9.4.1.1-pisp"
     container_name: dfspb-backend
     env_file: ./dfsp_b/dfsp_b_backend.env
     volumes:
@@ -347,7 +352,7 @@ services:
       - "dfspb-scheme-adapter:172.17.0.1"
 
   dfspb-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.11"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.11.1-pisp"
     container_name: dfspb-scheme-adapter
     env_file: ./dfsp_b/dfsp_b_scheme_adapter.env
     volumes:
@@ -390,7 +395,7 @@ services:
 
  ## PISP
   pisp-backend:
-    image: "mojaloop/mojaloop-simulator:v9.4.1"
+    image: "mojaloop/mojaloop-simulator:v9.4.1.1-pisp"
     container_name: pisp-backend
     env_file: ./pisp/pisp_backend.env
     ports:
@@ -401,7 +406,7 @@ services:
       - "pisp-scheme-adapter:172.17.0.1"
 
   pisp-scheme-adapter:
-    image: "mojaloop/sdk-scheme-adapter:v9.4.11"
+    image: "mojaloop/sdk-scheme-adapter:v9.4.11.1-pisp"
     container_name: pisp-scheme-adapter
     env_file: ./pisp/pisp_scheme_adapter.env
     volumes:
@@ -415,6 +420,44 @@ services:
     depends_on:
       - pisp-redis
     restart: always
+    extra_hosts:
+      - "central-ledger.local:172.17.0.1"
+      - "central-settlement.local:172.17.0.1"
+      - "ml-api-adapter.local:172.17.0.1"
+      - "account-lookup-service.local:172.17.0.1"
+      - "account-lookup-service-admin.local:172.17.0.1"
+      - "quoting-service.local:172.17.0.1"
+      - "moja-simulator.local:172.17.0.1"
+      - "central-ledger:172.17.0.1"
+      - "central-settlement:172.17.0.1"
+      - "ml-api-adapter:172.17.0.1"
+      - "account-lookup-service:172.17.0.1"
+      - "account-lookup-service-admin:172.17.0.1"
+      - "quoting-service:172.17.0.1"
+      - "simulator:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
+      - "simulator.local:172.17.0.1"
+      - "transaction-request-service:172.17.0.1"
+      - "pisp-backend:172.17.0.1"
+
+  pisp-thirdparty-api-adapter:
+    image: "mojaloop/thirdparty-api-adapter:v10.4.2"
+    container_name: pisp-thirdparty-api-adapter
+    command: sh -c "/opt/thirdparty-api-adapter/wait4/wait4.js thirdparty-api-adapter && npm run start"
+    ports:
+      - "12000:3008"
+    volumes:
+       - ./docker/thirdparty-api-adapter/default.json:/opt/thirdparty-api-adapter/config/default.json
+       - ./docker/wait4:/opt/thirdparty-api-adapter/wait4
+    networks:
+      - mojaloop-net
+    depends_on:
+      - kafka
+    healthcheck:
+      test: wget -q http://172.17.0.1:12000/health -O /dev/null || exit 1
+      timeout: 20s
+      retries: 30
+      interval: 15s
     extra_hosts:
       - "central-ledger.local:172.17.0.1"
       - "central-settlement.local:172.17.0.1"
