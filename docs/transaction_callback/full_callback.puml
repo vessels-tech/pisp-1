@@ -136,7 +136,7 @@ CEP -> CEP: We were waiting for a transfer with a tranferId of ""9876""
 CEP -> 3P: A transfer you subscribed to just occurred
 
 rnote over 3P #Light
-**""PUT /thirdpartyRequests/transactions/1234""**
+**""PATCH /thirdpartyRequests/transactions/1234""**
 ""FSPIOP-Source: pispa""
 ""FSPIOP-Destination: dfspa""
 {
