@@ -1,7 +1,6 @@
 # `PUT /transfer/{id}` Callback Design
 
 
-
 ## 1. Subscription
 
 The goal of subscription is to allow the Central-Event-Processor (CEP) to listen for `PUT /transfer/{id}` notification callbacks from Kafka, and deliver them to the Thirdparty-API-Adapter.
@@ -10,7 +9,7 @@ The goal of subscription is to allow the Central-Event-Processor (CEP) to listen
 
 The PISP issues a `POST /thirdpartyRequests/transactions` request to dfspa, asking to transfer funds from their users funds to dfspb.
 
-The Thirdparty-API-Adapter recieves this request, and emits a ThirdpartyTransactionRequest Subscription event
+The Thirdparty-API-Adapter recieves this request, and emits a **ThirdpartyTransactionRequest Subscription** event
  
 The CEP recieves this event, and starts listening for other events related to `transferRequestId=1234`
 
@@ -69,6 +68,9 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 5. How tightly or loosely coupled should the different listeners be? 
   - Should the listener for `transferId=9876` _know_ about the listener for `transferRequestId=1234`?
 
+6. Should this all be on the Notifications topic? Or should there be some division of topics?
+  - I don't want to burden the ml-api-adapter's notifications topic handler with extra notifications
+  - We can make use of existing different group ids...
 
 
 ## TODO:
@@ -78,3 +80,118 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 - [ ] finish breaking down seq diagram into inline doc
 - [ ] all feasible error conditions
 - [ ] enumerate and clarify all kafka events that are involved in this process
+- [ ] state machine diagram
+
+
+## Appendix A - List of Kafka Events
+
+
+### A.1 ThirdpartyTransactionRequest Subscription
+
+```js
+{
+  id: '<message.transferId>',
+  from: '<message.initiatorId>',
+  to: '<message.payerFsp>',
+  type: 'application/json',
+  content: {
+    headers: '<message.headers>',
+    payload: '<message.payload>'
+  },
+  metadata: {
+    event: {
+      id: '<uuid>',
+      type: 'transactionRequest',
+      action: 'subscription',
+      createdAt: '<timestamp>',
+      state: {
+        status: 'success',
+        code: 0
+      }
+    }
+  }
+}
+
+```
+
+
+
+### A.2 Authorization Request Event
+
+### A.3 Transfer Prepare Notification Event
+
+> Ref [1.3.1-prepare](https://github.com/mojaloop/documentation/blob/master/mojaloop-technical-overview/central-ledger/assets/diagrams/sequence/seq-position-1.3.1-prepare.plantuml)
+
+```js
+{
+  id: '<transferMessage.transferId>',
+  from: '<transferMessage.payerFsp>',
+  to: '<transferMessage.payeeFsp>',
+  type: 'application/json',
+  content: {
+    headers: '<transferHeaders>',
+    payload: '<transferMessage>'
+  },
+  metadata: {
+    event: {
+      id: '<uuid>',
+      responseTo: '<previous.uuid>',
+      type: 'transfer',
+      action: 'prepare',
+      createdAt: '<timestamp>',
+      state: {
+        status: 'success',
+        code: 0
+      }
+    }
+  }
+}
+```
+
+
+### A.4 Transfer Fulfil Notification Event
+
+>Ref: [1.3.2-fulfil-position-handler-consume-v1.1](https://docs.mojaloop.io/documentation/mojaloop-technical-overview/central-ledger/transfers/1.3.2-fulfil-position-handler-consume-v1.1.html)
+
+```js
+{
+  id: '<transferMessage.transferId>',
+  from: '<transferMessage.payerFsp>',
+  to: '<transferMessage.payeeFsp>',
+  type: 'application/json',
+  content: {
+    headers: '<transferHeaders>',
+    payload: '<transferMessage>'
+  },
+  metadata: {
+    event: {
+      id: '<uuid>',
+      responseTo: '<previous.uuid>',
+      type: 'transfer',
+      action: 'commit' | 'reserve',
+      createdAt: '<timestamp>',
+      state: {
+        status: 'success',
+        code: 0
+      }
+    }
+  }
+}
+```
+
+
+### A.5 Thirdparty Transaction Request End Event
+
+
+### A.n Authorization Failure Event
+
+### A.n Thirdparty Transaction Request Error Event
+
+- User rejects
+- Fails authorization?
+- DFSP rejects
+
+### A.n Transfer Request Error Event
+
+- transfer timeout
+- rejection from Payee `PUT /transfers/{id}/error`
