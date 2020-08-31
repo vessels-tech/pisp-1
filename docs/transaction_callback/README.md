@@ -1,4 +1,4 @@
-# `PUT /transfer/{id}` Callback Design
+# `PATCH /thirdpartyRequests/transactions/{id}` Callback Design
 
 
 ## 1. Subscription
@@ -35,13 +35,13 @@ It inspects the event body, and sees the `body.transactionId` of `5678`. CEP sta
 
 ### 2.2 `POST /transfers`
 
-DFSPA issues a `POST /transfer/` request to initiate the transfer. 
+DFSPA issues a `POST /transfer` request to initiate the transfer. 
 
-The ML-API-Adapter recieves this API call, and sends it on to Kafka.
+The central-ledger processes this call, and emits a **Transfer Prepare Notification** event
 
 The CEP observes this event (as it contains either a request body or encoded interledger packet with a `transactionId=5678`) 
 
-The `POST /transfers` contains a `transferId` of `9876`. CEP starts listening for events related to `transferId=9876`.
+The **Transfer Prepare Notification** event contains a `transferId` of `9876`. CEP starts listening for events related to `transferId=9876`.
 
 ![context_transfer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/vessels-tech/pisp-1/feature/273-tx-notif-design-2/docs/transaction_callback/3_context_transfer.puml)
 
@@ -50,9 +50,9 @@ The `POST /transfers` contains a `transferId` of `9876`. CEP starts listening fo
 
 DFSPB issues a `PUT /transfers/{id}`.
 
-The transfer is processed by the central-ledger, which emits a Transfer Notification Event.
+The transfer is processed by the central-ledger, which emits a **Transfer Fulfil Notification** event.
 
-The CEP sees this Transfer Notification Event, with a `transferId=9876`. It sees the related `transactionRequest` listener, and emits a ThirdpartyRequestTransaction Notification Event.
+The CEP sees this **Transfer Fulfil Notification** event, with a `transferId=9876`. It sees the related `transactionRequest` listener, and emits a **ThirdpartyTransactionRequest Fulfil** Event.
 
 The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyRequests/transactions/1234` request to the PISP.
 
@@ -68,28 +68,35 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 
 2. Can we generalize this pattern better and make it more applicable to other use cases?
   - e.g. `PISP Consents`, `FX`, `Cross-network`?
+    - Probably, we should go through this design process with those use cases and see the commonalities
 
 3. When should does the CEP _stop listening_?
-  - we need to enumerate the error conditions a little better
+  - We need to enumerate the error conditions a little better
 
 4. When do we consider a _transaction_ final? Is it determined by the PayeeFSP? Or perhaps by the Central-Ledger? Or could it be either? 
+  - I _think_ it's based on the Central-Ledger's **Transfer Fulfil Notification**
 
 5. How tightly or loosely coupled should the different listeners be? 
   - Should the listener for `transferId=9876` _know_ about the listener for `transferRequestId=1234`?
+  - I _think_ so, because we need to keep the old listeners around in order to listen for Error Notifications
 
 6. Should this all be on the Notifications topic? Or should there be some division of topics?
   - I don't want to burden the ml-api-adapter's notifications topic handler with extra notifications
   - We can make use of existing different group ids...
 
+7. What database should the CEP use to store these subscriptions?
+  - It currently uses Mongo, but that may be unsuitable
+  - Multiple listeners referring to 1 shared object may also be tricky, but likely necessary... so we may want some transaction guarantees
+
 
 ## TODO:
 
-- [ ] More detail on different listeners and their interactions
-- [ ] tidy up the transfers section
-- [ ] finish breaking down seq diagram into inline doc
-- [ ] all feasible error conditions
-- [ ] enumerate and clarify all kafka events that are involved in this process
-- [ ] state machine diagram
+- [x] More detail on different listeners and their interactions
+- [x] tidy up the transfers section
+- [x] finish breaking down seq diagram into inline doc
+- [ ] enuerate through the error conditions
+- [x] enumerate and clarify all kafka events that are involved in this process
+- [x] listeners/context body diagram
 
 
 ## Appendix A - List of Kafka Events
@@ -188,8 +195,7 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 }
 ```
 
-
-### A.4 Transfer Fulfil Notification Event
+### A.4 Transfer Fulfil Notification
 
 >Ref: [1.3.2-fulfil-position-handler-consume-v1.1](https://docs.mojaloop.io/documentation/mojaloop-technical-overview/central-ledger/transfers/1.3.2-fulfil-position-handler-consume-v1.1.html)
 
@@ -219,13 +225,45 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 }
 ```
 
+### A.5 ThirdpartyTransactionRequest Fulfil
 
-### A.5 Thirdparty Transaction Request End Event
+```js
+{
+  id: '<message.id>',
+  from: '<???>',
+  to: '<message.initiatorId>',
+  type: 'application/json',
+  content: {
+    headers: '<message.headers>',
+    payload: {
+      transactionRequestId: '<uuid>',
+      sourceAccountId: 'string',
+      consentId: 'string',
+      ...
+    }
+  },
+  metadata: {
+    event: {
+      id: '<uuid>',
+      type: 'transactionRequest',
+      action: 'fulfil',
+      createdAt: '<timestamp>',
+      state: {
+        status: 'success',
+        code: 0
+      }
+    }
+  }
+}
+```
 
+<!-- ### A.n Authorization Failure Event
 
-### A.n Authorization Failure Event
+[ todo ]
 
 ### A.n Thirdparty Transaction Request Error Event
+
+[ todo ]
 
 - User rejects
 - Fails authorization?
@@ -233,15 +271,19 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 
 ### A.n Transfer Request Error Event
 
+[ todo ]
+
 - transfer timeout
-- rejection from Payee `PUT /transfers/{id}/error`
+- rejection from Payee `PUT /transfers/{id}/error` -->
 
 
-## Appendix B - CEP ThirdpartyTransactionRequest Subscription State Machine
-
+## Appendix B - CEP ThirdpartyTransactionRequest Subscription States
 
 ```js
-'transactionRequestId/1234'
+Active Listeners:
+- 'transactionRequestId/1234'
+
+Subscription Object:
 {
   initiatorId: 'pispA',
   sourceDFSP: 'dfspA',
@@ -252,8 +294,11 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 ```
 
 ```js
-'transactionRequestId/1234'
-'transactionId/5678'
+Active Listeners:
+- 'transactionRequestId/1234'
+- 'transactionId/5678'
+
+Subscription Object:
 {
   initiatorId: 'pispA',
   sourceDFSP: 'dfspA',
@@ -264,9 +309,11 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 ```
 
 ```js
-'transactionRequestId/1234'
-// 'transactionId/5678' - maybe we can retire this listener
-'transferId/9876'
+Active Listeners:
+- 'transactionRequestId/1234'
+- 'transferId/9876'
+
+Subscription Object:
 {
   initiatorId: 'pispA',
   sourceDFSP: 'dfspA',
