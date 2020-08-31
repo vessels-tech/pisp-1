@@ -13,8 +13,7 @@ The Thirdparty-API-Adapter recieves this request, and emits a **ThirdpartyTransa
  
 The CEP recieves this event, and starts listening for other events related to `transferRequestId=1234` on the notifications topic.
 
-
-![subscription](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mojaloop/pisp/master/docs/linking/0-pre-linking.puml)
+![subscription](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/vessels-tech/pisp-1/feature/273-tx-notif-design-2/docs/transaction_callback/1_subscription.puml)
 
 
 ## 2. Context Gathering
@@ -31,6 +30,9 @@ The since the CEP is listening for events related to `transactionRequestId=1234`
 
 It inspects the event body, and sees the `body.transactionId` of `5678`. CEP starts listening for events related to the `transactionId=5678`.
 
+![context_auth](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/vessels-tech/pisp-1/feature/273-tx-notif-design-2/docs/transaction_callback/2_context_auth.puml)
+
+
 ### 2.2 `POST /transfers`
 
 DFSPA issues a `POST /transfer/` request to initiate the transfer. 
@@ -40,6 +42,8 @@ The ML-API-Adapter recieves this API call, and sends it on to Kafka.
 The CEP observes this event (as it contains either a request body or encoded interledger packet with a `transactionId=5678`) 
 
 The `POST /transfers` contains a `transferId` of `9876`. CEP starts listening for events related to `transferId=9876`.
+
+![context_transfer](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/vessels-tech/pisp-1/feature/273-tx-notif-design-2/docs/transaction_callback/3_context_transfer.puml)
 
 
 ## 3. Notification
@@ -52,6 +56,9 @@ The CEP sees this Transfer Notification Event, with a `transferId=9876`. It sees
 
 The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyRequests/transactions/1234` request to the PISP.
 
+![transaction_callback](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/vessels-tech/pisp-1/feature/273-tx-notif-design-2/docs/transaction_callback/4_transaction_callback.puml)
+
+
 ## Outstanding Questions
 
 1. Should the CEP be listening for `POST /quotes` (probably from the quoting-service) or for  `POST /authorizations` (probably from the 3p-api-adapter?)
@@ -60,13 +67,12 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
     - does the `quoting-service` publish to kafka at the moment? No.
 
 2. Can we generalize this pattern better and make it more applicable to other use cases?
-  - e.g. `Consents`, `FX`, `Cross-network`?
+  - e.g. `PISP Consents`, `FX`, `Cross-network`?
 
 3. When should does the CEP _stop listening_?
   - we need to enumerate the error conditions a little better
 
 4. When do we consider a _transaction_ final? Is it determined by the PayeeFSP? Or perhaps by the Central-Ledger? Or could it be either? 
-
 
 5. How tightly or loosely coupled should the different listeners be? 
   - Should the listener for `transferId=9876` _know_ about the listener for `transferRequestId=1234`?
