@@ -3,15 +3,18 @@
 
 ## 1. Subscription
 
-The goal of subscription is to allow the Central-Event-Processor (CEP) to listen for `PUT /transfer/{id}` notification callbacks from Kafka, and deliver them to the Thirdparty-API-Adapter.
+The goal of subscription is to allow the Central-Event-Processor (CEP) to listen for **Transfer Fulfil Notification Events** on the Notifications Topic, and deliver them to the Thirdparty-API-Adapter.
 
 # 1.1 `POST /thirdpartyRequests/transactions`
 
-The PISP issues a `POST /thirdpartyRequests/transactions` request to dfspa, asking to transfer funds from their users funds to dfspb.
+The PISP issues a `POST /thirdpartyRequests/transactions` request to dfspA, asking to transfer funds from their users funds to dfspB.
 
 The Thirdparty-API-Adapter recieves this request, and emits a **ThirdpartyTransactionRequest Subscription** event
  
-The CEP recieves this event, and starts listening for other events related to `transferRequestId=1234`
+The CEP recieves this event, and starts listening for other events related to `transferRequestId=1234` on the notifications topic.
+
+
+![subscription](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/mojaloop/pisp/master/docs/linking/0-pre-linking.puml)
 
 
 ## 2. Context Gathering
@@ -22,7 +25,7 @@ The CEP is listening for events related to a `transactionRequestId=1234`. In ord
 
 > Maybe this should be on the quote you say? See [outstanding-questions](#outstanding-questions)
 
-The Thirdparty-API-Adapter recieves a `POST /authorizations` request, and before forwarding it to the PISP, it puts an `Thirdparty Authorization Event` onto a kafka topic.
+The Thirdparty-API-Adapter recieves a `POST /authorizations` request, and before forwarding it to the PISP, it puts a **ThirdpartyAuthorizationRequest** event onto the notifications kafka topic.
 
 The since the CEP is listening for events related to `transactionRequestId=1234`, is observes that this event is related.
 
@@ -85,18 +88,22 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 
 ## Appendix A - List of Kafka Events
 
-
 ### A.1 ThirdpartyTransactionRequest Subscription
 
 ```js
 {
-  id: '<message.transferId>',
+  id: '<message.id>',
   from: '<message.initiatorId>',
   to: '<message.payerFsp>',
   type: 'application/json',
   content: {
     headers: '<message.headers>',
-    payload: '<message.payload>'
+    payload: {
+      transactionRequestId: '<uuid>',
+      sourceAccountId: 'string',
+      consentId: 'string',
+      ...
+    }
   },
   metadata: {
     event: {
@@ -111,14 +118,41 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
     }
   }
 }
-
 ```
 
+### A.2 ThirdpartyAuthorizationRequest
 
+```js
+{
+  id: '<message.id>',
+  from: '<message.payerFsp>',
+  to: '<message.initiatorId>',
+  type: 'application/json',
+  content: {
+    headers: '<message.headers>',
+    payload: {
+      transactionRequestId: '<uuid>',
+      transactionId: '<uuid>',
+      amount: {...},
+      quote: {...}
+    }
+  },
+  metadata: {
+    event: {
+      id: '<uuid>',
+      type: 'authorizationRequest',
+      action: 'subscription',
+      createdAt: '<timestamp>',
+      state: {
+        status: 'success',
+        code: 0
+      }
+    }
+  }
+}
+```
 
-### A.2 Authorization Request Event
-
-### A.3 Transfer Prepare Notification Event
+### A.3 Transfer Prepare Notification
 
 > Ref [1.3.1-prepare](https://github.com/mojaloop/documentation/blob/master/mojaloop-technical-overview/central-ledger/assets/diagrams/sequence/seq-position-1.3.1-prepare.plantuml)
 
@@ -195,3 +229,43 @@ The Thirdparty-API-Adapter sees this event, and sends a `PATCH /thirdpartyReques
 
 - transfer timeout
 - rejection from Payee `PUT /transfers/{id}/error`
+
+
+## Appendix B - CEP ThirdpartyTransactionRequest Subscription State Machine
+
+
+```js
+'transactionRequestId/1234'
+{
+  initiatorId: 'pispA',
+  sourceDFSP: 'dfspA',
+  transactionRequestId: '1234',
+  transactionId: null,
+  transferId: null,
+}
+```
+
+```js
+'transactionRequestId/1234'
+'transactionId/5678'
+{
+  initiatorId: 'pispA',
+  sourceDFSP: 'dfspA',
+  transactionRequestId: '1234',
+  transactionId: '5678',
+  transferId: null,
+}
+```
+
+```js
+'transactionRequestId/1234'
+// 'transactionId/5678' - maybe we can retire this listener
+'transferId/9876'
+{
+  initiatorId: 'pispA',
+  sourceDFSP: 'dfspA',
+  transactionRequestId: '1234',
+  transactionId: '5678',
+  transferId: '9876'
+}
+```
