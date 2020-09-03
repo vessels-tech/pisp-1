@@ -9,7 +9,7 @@ Supporting documentation for the PISP implementation.
 - Design Elements
   - [Proposed Error Codes](./error_codes.md)
   - [Mojaloop Roles + Endpoints](./roles_and_endpoints.md)
-  - [scheme_adapter_model](./thirdparty_scheme_adapter_models.md)
+  - [Scheme Adapter Changes](./thirdparty_scheme_adapter_models.md)
 - [Design Decisions](./design-decisions/README.md)
 - [Git Branching Strategy](./git_branching.md)
 - [Tools](#tools)
