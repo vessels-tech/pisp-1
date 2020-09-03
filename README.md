@@ -1,4 +1,6 @@
-# PISP - Payment Initiation Service Provider integration with Mojaloop
+# PISP - Payment Initiation Service Providers
+
+This repo contains the documentation, specifications and tests for the Mojaloop-PISP workstream.
 
 ## Overview
 - [Project Documentation](./docs/README.md) - Project Documentation, flows, uml diagrams and so on
@@ -10,7 +12,6 @@
  - [Proposal Documentation on Google drive](https://docs.google.com/document/d/17rLpCPM2NY-i4oKGxhlBMbQahGY0k83rij2EOiU_OR4/edit)
  - [ZenHub board](https://app.zenhub.com/workspaces/mojaloop-project-59edee71d1407922110cf083/board?labels=oss-pisp,oss-pisp-ref&filterLogic=any&useDefaultFilterLogic=false&repos=116650553,106737677)
   
-
 
 ## Running Tests
 
@@ -41,7 +42,6 @@ npm run test:e2e
 ```bash
 npm run test:e2e -- --watch
 ```
-I
 
 ### Contract Tests
 
@@ -56,7 +56,6 @@ npm run test:contract
 ```bash
 npm run test:contract -- --watch
 ```
-I
 
 ## Writing tests for PISP Features:
 
