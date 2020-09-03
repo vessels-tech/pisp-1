@@ -20,7 +20,10 @@ end note
 
 ...
 
-PISP -> Switch ++: ""PUT /consentRequests/456 {""\n\
+PISP -> Switch ++: ""PUT /consentRequests/456""\n\
+    ""  FSIOP-Source: pispa""\n\
+    ""  FSIOP-Destination: dfspa""\n\
+"" {""\n\
     ""  initiatorId: "PISP",""\n\
     ""  authChannels: [ "OTP" ],""\n\
     ""  scopes: [ ""\n\
@@ -36,7 +39,10 @@ PISP -> Switch ++: ""PUT /consentRequests/456 {""\n\
 Switch --> PISP: ""202 Accepted""
 deactivate PISP
 
-Switch -> DFSP ++: ""PUT /consentRequests/456 {""\n\
+Switch -> DFSP ++: ""PUT /consentRequests/456""\n\
+    ""  FSIOP-Source: pispa""\n\
+    ""  FSIOP-Destination: dfspa""\n\
+"" {""\n\
     ""  initiatorId: "PISP",""\n\
     ""  authChannels: [ "OTP" ],""\n\
     ""  scopes: [ ""\n\
