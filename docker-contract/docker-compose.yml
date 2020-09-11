@@ -21,6 +21,8 @@ services:
     extra_hosts:
       - "pisp-sim-scheme-adapter:172.17.0.1"
       - "ml-testing-toolkit:172.17.0.1"
+      # Reach the host machine
+      - "mojaloop.pisp-demo-server.local:192.168.65.2"
 
   ml-testing-toolkit-ui:
     image: mojaloop/ml-testing-toolkit-ui:v11.0.9
