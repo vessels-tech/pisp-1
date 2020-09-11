@@ -1,6 +1,6 @@
 {
   "VERSION": 1,
-  "CALLBACK_ENDPOINT": "http://pisp-sim-scheme-adapter:8000",
+  "CALLBACK_ENDPOINT": "http://mojaloop.pisp-demo-server.local:8080",
   "CALLBACK_RESOURCE_ENDPOINTS": {
     "enabled": false,
     "endpoints": [
