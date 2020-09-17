@@ -49,6 +49,56 @@
           "Date": "{$request.headers.date}"
         }
       }
+    },
+    "post": {
+      "successCallback": {
+        "method": "post",
+        "path": "/transfers/{ID}",
+        "pathPattern": "/transfers/{$request.params.ID}",
+        "headerOverride": {
+          "FSPIOP-Source": "{$config.FSPID}",
+          "FSPIOP-Destination": "{$request.headers.fspiop-source}",
+          "Content-Type": "{$session.negotiatedContentType}",
+          "Date": "{$request.headers.date}"
+        }
+      },
+      "errorCallback": {
+        "method": "patch",
+        "path": "/thirdpartyRequests/transactions/{ID}/error",
+        "pathPattern": "/thirdpartyRequests/transactions/{{$request.params.ID}}/error",
+        "headerOverride": {
+          "FSPIOP-Source": "{$config.FSPID}",
+          "FSPIOP-Destination": "{$request.headers.fspiop-source}",
+          "Content-Type": "{$session.negotiatedContentType}",
+          "Date": "{$request.headers.date}"
+        }
+      }
+    }
+  },
+  "/thirdPartyAuthorizations/{ID}": {
+    "post": {
+      "successCallback": {
+        "method": "patch",
+        "path": "/thirdpartyRequests/transactions/{ID}",
+        "pathPattern": "/thirdpartyRequests/transactions/{$request.params.ID}",
+        "headerOverride": {
+          "FSPIOP-Source": "{$config.FSPID}",
+          "FSPIOP-Destination": "{$request.headers.fspiop-source}",
+          "Content-Type": "{$session.negotiatedContentType}",
+          "Date": "{$request.headers.date}"
+        }
+      },
+      "errorCallback": {
+        "method": "patch",
+        "path": "/thirdpartyRequests/transactions/{ID}/error",
+        "pathPattern": "/thirdpartyRequests/transactions/{{$request.params.ID}}/error",
+        "headerOverride": {
+          "FSPIOP-Source": "{$config.FSPID}",
+          "FSPIOP-Destination": "{$request.headers.fspiop-source}",
+          "Content-Type": "{$session.negotiatedContentType}",
+          "Date": "{$request.headers.date}"
+        }
+      }
     }
   },
   "/thirdpartyRequests/transactions/{ID}": {

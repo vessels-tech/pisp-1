@@ -914,7 +914,7 @@
   {
     "ruleId": 25,
     "priority": 1,
-    "description": "put /authorizations/{ID}. Sent from PISP to Switch.",
+    "description": "post /thirdPartyAuthorizations/{ID}. Sent from PISP to Switch.",
     "apiVersion": {
       "minorVersion": 1,
       "majorVersion": 0,
@@ -926,18 +926,18 @@
         {
           "fact": "operationPath",
           "operator": "equal",
-          "value": "/authorizations/{ID}"
+          "value": "/thirdPartyAuthorizations/{ID}"
         },
         {
           "fact": "method",
           "operator": "equal",
-          "value": "put"
+          "value": "post"
         }
       ]
     },
     "event": {
-      "method": "patch",
-      "path": "/thirdpartyRequests/transactions/{ID}",
+      "method": "put",
+      "path": "/transfers/{ID}",
       "params": {
         "headers": {
           "Accept": "application/vnd.interoperability.thirdparty+json;version=1.0",
