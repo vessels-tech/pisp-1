@@ -76,7 +76,7 @@ D1 --> S: ""200 OK""
 
 ... PISP confirms payee party with their user ...
 
-newpage
+' newpage
 
 == Agreement Phase ==
 rnote right of D1 #Light
@@ -182,7 +182,7 @@ rnote left of D2 #Light
 {
   "quoteId": "456", //Set by the payer dfsp
   "transactionId": "987", //Set by the payer dfsp
-  *"transactionRequestId": "123", //Relates to the original thirdpartyRequest!*
+  **"transactionRequestId": "123", //Relates to the original thirdpartyRequest!**
   "payee": {
     "partyIdInfo": {
       "partyIdType": "MSISDN",
@@ -213,6 +213,20 @@ rnote left of D2 #Light
     "initiator": "PAYER",
     "initiatorType": "CONSUMER"
   },
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ],
   "note": "quote note"
 }
 end note
@@ -257,6 +271,20 @@ rnote over S #Light
     "initiator": "PAYER",
     "initiatorType": "CONSUMER"
   },
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ],
   "note": "quote note"
 }
 end note
@@ -283,6 +311,7 @@ rnote left of D2 #Light
   "expiration": "2020-06-15T12:00:00.000",
   "ilpPacket": "...",
   "condition": "...",
+  //TODO: do we also want participants here? Otherwise how might we get the quote response to the PISP?
 }
 end note
 D3 -> S: ""PUT /quotes/456""
@@ -544,7 +573,7 @@ note over D2
   and can go ahead and initiate the transfer
 end note
 
-newpage
+' newpage
 
 == Transfer Phase ==
 
@@ -554,7 +583,6 @@ rnote over D2 #Light
 ""FSPIOP-Destination: dfspb""
 {
   "transferId": "321",
-  "quoteId": "456",
   "payerFsp": "dfspa",
   "payeeFsp": "dfspb",
   "amount": {
@@ -564,6 +592,22 @@ rnote over D2 #Light
   "expiration": "2020-06-15T13:00:00.000",
   "ilpPacket": "...",
   "condition": "...",
+  "transactionId": "987",
+  "transactionRequestId": "123",
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ],
 }
 end note
 D2 -> S: ""POST /transfers""
@@ -585,6 +629,20 @@ rnote over S #Light
   "expiration": "2020-06-15T13:00:00.000",
   "ilpPacket": "...",
   "condition": "...",
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ],
 }
 end note
 S -> D3: ""POST /transfers""
@@ -597,7 +655,21 @@ rnote left of D3 #Light
 {
   "fulfilment": "...",
   "completedTimestamp": "2020-06-15T12:01:00.000",
-  "transferState": "COMMITTED"
+  "transferState": "COMMITTED",
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ]
 }
 end note
 D3 -> S: ""PUT /transfers/321""
@@ -610,7 +682,21 @@ rnote over S #Light
 {
   "fulfilment": "...",
   "completedTimestamp": "2020-06-15T12:01:00.000",
-  "transferState": "COMMITTED"
+  "transferState": "COMMITTED",
+  "transactionParticipants": [
+    { 
+      "id": "dfspa",
+      "role": "CREDITOR",
+    },
+    { 
+      "id": "dfspb",
+      "role": "DEBTOR",
+    },
+    {
+      "id": "pispa",
+      "role": "INITIATOR"
+    }
+  ]
 }
 end note
 S -> D2: ""PUT /transfers/321""
