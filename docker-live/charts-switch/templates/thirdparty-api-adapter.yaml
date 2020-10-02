@@ -4,6 +4,8 @@ metadata:
   name: thirdpartyapiadapter
   labels:
     app: thirdpartyapiadapter
+    app.kubernetes.io/name: thirdpartyapiadapter
+
 spec:
   replicas: 1
   strategy:

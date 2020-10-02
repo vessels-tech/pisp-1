@@ -4,6 +4,8 @@ metadata:
   name: mlapiadapter
   labels:
     app: mlapiadapter
+    app.kubernetes.io/name: mlapiadapter
+
 spec:
   replicas: 1
   strategy:

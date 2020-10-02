@@ -4,6 +4,8 @@ metadata:
   name: transactionrequestsservice
   labels:
     app: transactionrequestsservice
+    app.kubernetes.io/name: transactionrequestsservice
+
 spec:
   replicas: 1
   strategy:

@@ -4,6 +4,7 @@ metadata:
   name: centralledger
   labels:
     app: centralledger
+    app.kubernetes.io/name: centralledger
 spec:
   replicas: 1
   strategy:

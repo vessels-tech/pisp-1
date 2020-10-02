@@ -4,6 +4,8 @@ metadata:
   name: quotingservice
   labels:
     app: quotingservice
+    app.kubernetes.io/name: quotingservice
+
 spec:
   replicas: 1
   strategy:

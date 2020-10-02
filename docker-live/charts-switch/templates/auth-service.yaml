@@ -4,6 +4,7 @@ metadata:
   name: authservice
   labels:
     app: authservice
+    app.kubernetes.io/name: authservice
 spec:
   replicas: 1
   strategy:

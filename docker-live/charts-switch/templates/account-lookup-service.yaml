@@ -4,6 +4,7 @@ metadata:
   name: accountlookupservice
   labels:
     app: accountlookupservice
+    app.kubernetes.io/name: accountlookupservice
 spec:
   replicas: 1
   strategy:
