@@ -437,9 +437,9 @@ const makePispSteps = (_constConfig: ConstConfig, _globalConfig: GlobalConfig, _
 
 function makeParticipantSteps(participant: Participant) {
   const constConfig: ConstConfig = {
-    id: `participant_${participant}`,
-    name: `Participant Steps - ${participant}`,
-    description: `Sets up participant steps for ${participant}`,
+    id: `participant_${participant.id}`,
+    name: `Participant Steps - ${participant.id}`,
+    description: `Sets up participant steps for ${participant.id}`,
     ignoreFailure: false,
   }
 
