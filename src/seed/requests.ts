@@ -2,7 +2,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 
 
 export type PostHubAccountRequest = {
-  fspiopSource: string,
   body: {
     type: 'HUB_MULTILATERAL_SETTLEMENT' | 'HUB_RECONCILIATION',
     currency: string
@@ -77,7 +76,6 @@ export default class Requests {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'FSPIOP-Source': request.fspiopSource,
       },
       data: {
         ...request.body
@@ -124,10 +122,10 @@ export default class Requests {
     const url = `${host}/participants`
     const options: AxiosRequestConfig = {
       method: 'post',
-      url,
       headers: {
         'Content-Type': 'application/json',
       },
+      url,
       data: {
         ...request.body
       }

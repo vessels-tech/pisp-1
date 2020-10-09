@@ -23,8 +23,6 @@ const stepGenerator = (config: GlobalConfig): Array<SeedStep> => {
       name: 'setup `HUB_MULTILATERAL_SETTLEMENT` account',
       ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postHubAccount(config.urls.centralLedger, {
-        // TODO: better config for different participant ids
-        fspiopSource: 'payerfsp',
         body: {
           type: "HUB_MULTILATERAL_SETTLEMENT",
           currency: config.currency
@@ -35,8 +33,6 @@ const stepGenerator = (config: GlobalConfig): Array<SeedStep> => {
       name: 'setup `HUB_RECONCILIATION` account',
       ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postHubAccount(config.urls.centralLedger, {
-        // TODO: better config for different participant ids
-        fspiopSource: 'payerfsp',
         body: {
           type: "HUB_RECONCILIATION",
           currency: config.currency
