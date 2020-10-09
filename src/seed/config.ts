@@ -8,7 +8,17 @@ export interface GlobalConfig {
   // Urls to be passed into internal services
   applicationUrls: {
     oracle: string,
-  }
+  },
+  participants: Array<Participant>
+}
+
+export enum ParticipantType {
+  DFSP = 'DFSP',
+  PISP = 'PISP'
+}
+export interface Participant {
+  id: string,
+  type: ParticipantType
 }
 
 // TODO: parse config with convict or something
@@ -22,12 +32,25 @@ const config = {
     als: `${scheme}://${baseUrl}/account-lookup-service`,
     alsAdmin: `${scheme}://${baseUrl}/account-lookup-service-admin`,
     centralLedger: `${scheme}://${baseUrl}/central-ledger`
-    // centralLedger: `${scheme}://${baseUrl}`
   },
   applicationUrls: {
     // TODO: run the simulator for oracles...
     oracle: 'TODO',
-  }
+  },
+  participants: [
+    {
+      id: 'dfspa',
+      type: ParticipantType.DFSP
+    },
+    {
+      id: 'dfspb',
+      type: ParticipantType.DFSP
+    },
+    {
+      id: 'pispa',
+      type: ParticipantType.PISP
+    },
+  ]
 }
 
 export default config
