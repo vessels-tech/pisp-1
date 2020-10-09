@@ -23,6 +23,8 @@ uninstall-switch: mysql-drop-database
 
 uninstall-participants:
 	helm del pisp-poc-dfspa
+	helm del pisp-poc-dfspb
+	helm del pisp-poc-pispa
 
 uninstall-all: uninstall-switch clean-install-base clean-add-repos
 

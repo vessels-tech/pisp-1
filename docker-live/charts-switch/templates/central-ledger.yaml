@@ -66,8 +66,8 @@ spec:
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
-          - name: LOG_LEVEL
-            value: debug
+          # - name: LOG_LEVEL
+            # value: debug
         # command: [ "sh", "-c", "tail -f /dev/null" ]
         securityContext:
           runAsUser: 0

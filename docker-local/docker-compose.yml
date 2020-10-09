@@ -337,7 +337,7 @@ services:
 
   dfspa-thirdparty-scheme-adapter-inbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: dfspa-thirdparty-scheme-adapter-inbound
@@ -383,7 +383,7 @@ services:
 
   dfspa-thirdparty-scheme-adapter-outbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: dfspa-thirdparty-scheme-adapter-outbound
@@ -487,7 +487,7 @@ services:
 
   dfspb-thirdparty-scheme-adapter-inbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: dfspb-thirdparty-scheme-adapter-inbound
@@ -533,7 +533,7 @@ services:
 
   dfspb-thirdparty-scheme-adapter-outbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: dfspb-thirdparty-scheme-adapter-outbound
@@ -638,7 +638,7 @@ services:
 
   pisp-thirdparty-scheme-adapter-inbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: pisp-thirdparty-scheme-adapter-inbound
@@ -685,7 +685,7 @@ services:
 
   pisp-thirdparty-scheme-adapter-outbound:
     image: "mojaloop/thirdparty-scheme-adapter:v11.18.0"
-    # build: 
+    # build:
     #   context: ../../thirdparty-scheme-adapter
     #   dockerfile: ./docker/Dockerfile
     container_name: pisp-thirdparty-scheme-adapter-outbound

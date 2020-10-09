@@ -18,6 +18,24 @@ export type PostHubEndpointRequest = {
 
 export default class Requests {
 
+  private static async executeRequest(options: AxiosRequestConfig): Promise<AxiosResponse<any>> {
+    try {
+      const result = await axios(options)
+      return result;
+    } catch (err) {
+      if (err.response) {
+        console.log(`executeRequest failed with status: ${err.response.status}`)
+        console.log(err.response.data)
+
+        // TODO: better error handling
+        throw new Error(`Status: ${err.response.status} Message: ${JSON.stringify(err.response.data)}`)
+      }
+      console.log('Generic Error', err.message);
+      throw err
+    }
+  }
+
+
   public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
     const url = `${host}/participants/Hub/accounts`
     const options: AxiosRequestConfig = {
@@ -32,35 +50,25 @@ export default class Requests {
       }
     }
 
-    try {
-      const result = await axios(options)
-      return result;
-    } catch (err) {
-      if (err.response) {
-        console.log(`postHubAccount failed with status: ${err.response.status}`)
-        console.log(err.response.data)
+    return this.executeRequest(options)
 
-        // TODO: better error handling
-        throw new Error(`Status: ${err.response.status} Message: ${JSON.stringify(err.response.data)}`)
-      }
-      console.log('Generic Error', err.message);
-      throw err
-    }
 
   }
 
   public static async postHubEndpoints(host: string, request: PostHubEndpointRequest): Promise<AxiosResponse<any>> {
-    const url = `${host}/participants/Hub/accounts`
+    const url = `${host}/participants/Hub/endpoints`
     const options: AxiosRequestConfig = {
       method: 'post',
       url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       data: {
         ...request.body
       }
     }
 
-    const result = await axios(options)
-    return result
+    return this.executeRequest(options)
   }
 
 }

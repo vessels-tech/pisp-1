@@ -29,16 +29,21 @@ export class GenericSteps implements SeedCollection {
     let warnings: Array<string> = []
     let errors: Array<Error> = []
 
-    await Promise.all(this.steps.map(async step => {
+    for (const step of this.steps) {
       console.log("  - step:", chalk.magenta(step.name))
       const result = await step.command()
 
       warnings = warnings.concat(result.warnings)
       if (result.type === RunResultType.FAILURE) {
-        console.log('result', result.errors)
-        errors = errors.concat(result.errors)
+        if (step.ignoreFailure) {
+          // add to warnings - we are ignoring the failure
+          warnings = warnings.concat(result.errors.map(e => `${step.name}: ${e.name}, ${e.message}`))
+        } else {
+          // only add errors if we aren't ignoring failures
+          errors = errors.concat(result.errors)
+        }
       }
-    }))
+    }
 
     if (errors.length > 0) {
       return Result.makeFailureResult(errors, warnings)

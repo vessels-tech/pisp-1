@@ -14,6 +14,7 @@ const config = {
   currency: 'USD',
   urls: {
     centralLedger: `${scheme}://${baseUrl}/central-ledger`
+    // centralLedger: `${scheme}://${baseUrl}`
   }
 }
 
