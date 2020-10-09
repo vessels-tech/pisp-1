@@ -55,7 +55,7 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/Hub/endpoin
 }'
 ```
 
-### seed_oracle
+### seed_oracle - done
 
 ```bash
 curl --location --request POST '{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles' \
@@ -77,7 +77,7 @@ curl --location --request POST '{{HOST_ACCOUNT_LOOKUP_ADMIN}}/oracles' \
 ```
 
 
-### seed_dfspa
+### seed_dfspa - mostly done - need to fix a couple requests
 
 [ 
   note:
@@ -403,14 +403,14 @@ curl --location --request PUT '{{HOST_SIMULATOR_K8S_CLUSTER}}/parties/MSISDN/123
 
 ```
 
-### seed_dfspb
+### seed_dfspb - mostly done - need to fix a couple requests
 
 [
   note: same as above, just for a different id and endpoints
   see `environments/Mojaloop-Local-Docker-Compose.postman_environment_DFSP_PAYEE.json`
 ]
 
-### seed_pisp
+### seed_pisp - mostly done - need to fix a couple requests
 
 [
   see `environments/Mojaloop-Local-Docker-Compose.postman_environment_PISP.json`

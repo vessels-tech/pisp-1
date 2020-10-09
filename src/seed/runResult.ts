@@ -5,21 +5,6 @@ export enum RunResultType {
   FAILURE = 'FAILURE',
 }
 
-// export type RunResult = SuccessResult | FailureResult
-
-// export type SuccessResult = {
-//   type: RunResultType.SUCCESS,
-//   warnings: Array<string>
-// }
-
-// export type FailureResult = {
-//   type: RunResultType.FAILURE,
-//   warnings: Array<string>,
-//   errors: Array<Error>
-// }
-
-
-
 export type RunResult = SuccessResult | FailureResult
 export interface SuccessResult {
   type: RunResultType.SUCCESS
@@ -48,41 +33,3 @@ export class Result {
     }
   }
 }
-
-// export class SuccessResult implements SuccessResult {
-//   type: RunResultType.SUCCESS
-//   warnings: Array<string>
-
-//   constructor(warnings?: Array<string>) {
-//     this.type = RunResultType.SUCCESS
-//     if (warnings) {
-//       this.warnings = warnings
-//     } else {
-//       this.warnings = []
-//     }
-//   }
-
-//   public static makeSuccessResult(warnings?: Array<string>) {
-//     return new SuccessResult(warnings)
-//   }
-// }
-
-// export class FailureResult implements RunResult {
-//   type: RunResultType.FAILURE
-//   warnings: Array<string>
-//   errors: Array<Error>
-
-//   constructor(errors: Array<Error>, warnings?: Array<string>) {
-//     this.type = RunResultType.FAILURE;
-//     this.errors = errors
-//     if (warnings) {
-//       this.warnings = warnings
-//     } else {
-//       this.warnings = []
-//     }
-//   }
-
-//   public static makeFailureResult(errors: Array<Error>, warnings?: Array<string>) {
-//     return new FailureResult(errors, warnings)
-//   }
-// }

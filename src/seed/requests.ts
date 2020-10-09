@@ -60,14 +60,6 @@ export type PostAccountRequest = {
       currency: string,
     },
   }
-  // extensionList: {
-  //   extension: [
-  //     {
-  //       key: "string",
-  //       value: "string"
-  //     }
-  //   ]
-  // }
 }
 
 export type PostEndpointsRequest = {
@@ -77,7 +69,6 @@ export type PostEndpointsRequest = {
     value: string,
   }
 }
-
 export default class Requests {
   public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
     const url = `${host}/participants/Hub/accounts`
@@ -192,10 +183,6 @@ export default class Requests {
 
     return this.executeRequest(options)
   }
-
-
-
-
 
   private static async executeRequest(options: AxiosRequestConfig): Promise<AxiosResponse<any>> {
     try {

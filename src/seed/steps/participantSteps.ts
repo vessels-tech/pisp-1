@@ -245,6 +245,7 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
       }))
     },
     {
+      // TODO: this one is broken...
       name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PATCH`',
       ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
