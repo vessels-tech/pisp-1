@@ -28,9 +28,57 @@ export type PostOraclesRequest = {
   }
 }
 
+export type PostParticipantsRequest = {
+  body: {
+    name: string,
+    currency: string,
+  }
+}
+
+export type PostParticipantsPositionAndLimitsRequest = {
+  participantId: string,
+  body: {
+    currency: string,
+    limit: {
+      type: string,
+      value: number,
+    },
+    initialPosition: number
+  }
+}
+
+export type PostAccountRequest = {
+  participantId: string,
+  accountId: string
+  body: {
+    transferId: string,
+    externalReference: string,
+    action: string,
+    reason: string,
+    amount: {
+      amount: string,
+      currency: string,
+    },
+  }
+  // extensionList: {
+  //   extension: [
+  //     {
+  //       key: "string",
+  //       value: "string"
+  //     }
+  //   ]
+  // }
+}
+
+export type PostEndpointsRequest = {
+  participantId: string,
+  body: {
+    type: string,
+    value: string,
+  }
+}
+
 export default class Requests {
-
-
   public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
     const url = `${host}/participants/Hub/accounts`
     const options: AxiosRequestConfig = {
@@ -79,6 +127,74 @@ export default class Requests {
 
     return this.executeRequest(options)
   }
+
+
+  public static async postParticipants(host: string, request: PostParticipantsRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postParticipantsPositionAndLimits(host: string, request: PostParticipantsPositionAndLimitsRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/${request.participantId}/initialPositionAndLimits`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postAccount(host: string, request: PostAccountRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/${request.participantId}/accounts/${request.accountId}`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postEndpoint(host: string, request: PostEndpointsRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/${request.participantId}/endpoints`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+
+
 
 
   private static async executeRequest(options: AxiosRequestConfig): Promise<AxiosResponse<any>> {

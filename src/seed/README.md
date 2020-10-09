@@ -138,12 +138,17 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "value": "{{HOST_SIMULATOR_K8S_CLUSTER}}/participants/{{partyIdType}}/{{partyIdentifier}}/error"
 }'
 
+
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "type": "FSPIOP_CALLBACK_URL_PARTICIPANT_BATCH_PUT",
   "value": "{{HOST_SIMULATOR_K8S_CLUSTER}}/participants/{{requestId}}"
 }'
+
+
+
+
 
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
 --header 'Content-Type: application/json' \
@@ -194,6 +199,12 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "value": "{{HOST_SIMULATOR_K8S_CLUSTER}}/transfers/{{transferId}}"
 }'
 
+
+
+
+
+
+
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -242,6 +253,10 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "value": "{{HOST_SIMULATOR_K8S_CLUSTER}}/bulkTransfers/{{id}}"
 }'
 
+
+
+
+
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -256,15 +271,7 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "value": "{{HOST_SIMULATOR_K8S_CLUSTER}}"
 }'
 
-# creating a party
-curl --location --request PUT '{{HOST_SIMULATOR_K8S_CLUSTER}}/parties/MSISDN/123456789' \
---header 'Accept: application/vnd.interoperability.parties+json;version=1' \
---header 'Content-Type: application/vnd.interoperability.parties+json;version=1.0' \
---header 'FSPIOP-Source: mojaloop-sdk' \
---header 'Date: {{dateHeader}}' \
---header 'FSPIOP-Destination: mojaloop-sdk' \
---header 'FSPIOP-Signature: {{fspiop-signature}}' \
---data-raw '{"party":{"partyIdInfo":{"partyIdType":"MSISDN","partyIdentifier":"123456789","fspId":"dfspa"},"name":"Alice","personalInfo":{"complexName": {"firstName": "Alice","lastName": "A"},"dateOfBirth": "1982-02-01"}}}'
+
 
 
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
@@ -309,6 +316,9 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "type": "TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT",
   "value": "{{THIRDPARTY_SCHEME_ADAPTER_INBOUND}}"
 }'
+
+
+
 
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}}/endpoints' \
 --header 'Content-Type: application/json' \
@@ -379,6 +389,18 @@ curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/{{payerfsp}
   "type": "FSPIOP_CALLBACK_URL_AUTHORIZATIONS",
   "value": "{{THIRDPARTY_SCHEME_ADAPTER_INBOUND}}"
 }'
+
+
+# creating a party
+curl --location --request PUT '{{HOST_SIMULATOR_K8S_CLUSTER}}/parties/MSISDN/123456789' \
+--header 'Accept: application/vnd.interoperability.parties+json;version=1' \
+--header 'Content-Type: application/vnd.interoperability.parties+json;version=1.0' \
+--header 'FSPIOP-Source: mojaloop-sdk' \
+--header 'Date: {{dateHeader}}' \
+--header 'FSPIOP-Destination: mojaloop-sdk' \
+--header 'FSPIOP-Signature: {{fspiop-signature}}' \
+--data-raw '{"party":{"partyIdInfo":{"partyIdType":"MSISDN","partyIdentifier":"123456789","fspId":"dfspa"},"name":"Alice","personalInfo":{"complexName": {"firstName": "Alice","lastName": "A"},"dateOfBirth": "1982-02-01"}}}'
+
 ```
 
 ### seed_dfspb

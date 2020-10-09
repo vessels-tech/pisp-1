@@ -16,9 +16,20 @@ export enum ParticipantType {
   DFSP = 'DFSP',
   PISP = 'PISP'
 }
-export interface Participant {
+export type Participant = DFSPParticipant | PISPParticipant
+export interface DFSPParticipant {
   id: string,
-  type: ParticipantType
+  type: ParticipantType.DFSP
+  settlementAccountId: string
+  fspiopCallbackUrl: '',
+  thirdpartyCallbackUrl: ''
+}
+
+export interface PISPParticipant {
+  id: string,
+  type: ParticipantType.PISP
+  fspiopCallbackUrl: '',
+  thirdpartyCallbackUrl: ''
 }
 
 // TODO: parse config with convict or something
@@ -40,15 +51,23 @@ const config = {
   participants: [
     {
       id: 'dfspa',
-      type: ParticipantType.DFSP
+      type: ParticipantType.DFSP,
+      settlementAccountId: '1',
+      fspiopCallbackUrl: '',
+      thirdpartyBaseUrl: ''
     },
     {
       id: 'dfspb',
-      type: ParticipantType.DFSP
+      type: ParticipantType.DFSP,
+      settlementAccountId: '2',
+      fspiopCallbackUrl: '',
+      thirdpartyBaseUrl: ''
     },
     {
       id: 'pispa',
-      type: ParticipantType.PISP
+      type: ParticipantType.PISP,
+      fspiopCallbackUrl: '',
+      thirdpartyBaseUrl: ''
     },
   ]
 }

@@ -73,6 +73,7 @@
   "devDependencies": {
     "@mojaloop/api-snippets": "11.0.16",
     "@types/jest": "25.2.2",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "1.13.0",
     "@typescript-eslint/parser": "1.13.0",
     "eslint": "6.8.0",
@@ -94,6 +95,7 @@
     "swagger-cli": "^4.0.3",
     "ts-jest": "^26.0.0",
     "ts-node": "8.3.0",
-    "typescript": "3.9.2"
+    "typescript": "3.9.2",
+    "uuid": "^8.3.1"
   }
 }
