@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-lookup-service
+  name: account-lookup-service-admin
 spec:
   ports:
   - port: 4001
@@ -51,7 +51,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-lookup-service-admin
+  name: account-lookup-service
 spec:
   ports:
   - port: 4002
@@ -70,11 +70,11 @@ spec:
   rules:
     - http:
         paths:
-          - path: /account-lookup-service(/|$)(.*)
-            backend:
-              serviceName: account-lookup-service
-              servicePort: 4001
           - path: /account-lookup-service-admin(/|$)(.*)
             backend:
               serviceName: account-lookup-service-admin
+              servicePort: 4001
+          - path: /account-lookup-service(/|$)(.*)
+            backend:
+              serviceName: account-lookup-service
               servicePort: 4002

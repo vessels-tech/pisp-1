@@ -3,13 +3,14 @@ import config from './config'
 
 
 import hubSteps from './steps/hubSteps'
+import oracleSteps from './steps/oracleSteps'
 import { SeedCollection } from './types'
 
 
 
 const collections: Array<SeedCollection> = [
   hubSteps(config),
-
+  oracleSteps(config),
 ]
 
 export default collections

@@ -16,7 +16,70 @@ export type PostHubEndpointRequest = {
   }
 }
 
+export type PostOraclesRequest = {
+  body: {
+    oracleIdType: string,
+    endpoint: {
+      value: string,
+      endpointType: string,
+    },
+    currency: string,
+    isDefault: true
+  }
+}
+
 export default class Requests {
+
+
+  public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/Hub/accounts`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'FSPIOP-Source': request.fspiopSource,
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postHubEndpoints(host: string, request: PostHubEndpointRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/Hub/endpoints`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postOracles(host: string, request: PostOraclesRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/oracles`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
 
   private static async executeRequest(options: AxiosRequestConfig): Promise<AxiosResponse<any>> {
     try {
@@ -35,40 +98,5 @@ export default class Requests {
     }
   }
 
-
-  public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
-    const url = `${host}/participants/Hub/accounts`
-    const options: AxiosRequestConfig = {
-      method: 'post',
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'FSPIOP-Source': request.fspiopSource,
-      },
-      data: {
-        ...request.body
-      }
-    }
-
-    return this.executeRequest(options)
-
-
-  }
-
-  public static async postHubEndpoints(host: string, request: PostHubEndpointRequest): Promise<AxiosResponse<any>> {
-    const url = `${host}/participants/Hub/endpoints`
-    const options: AxiosRequestConfig = {
-      method: 'post',
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        ...request.body
-      }
-    }
-
-    return this.executeRequest(options)
-  }
 
 }

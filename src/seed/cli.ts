@@ -34,5 +34,15 @@ const runCollection = async (collection: SeedCollection) => {
 }
 
 
-// TODO: better cli config
-runCollection(collections[0])
+
+async function main() {
+  for (const collection of collections) {
+    await runCollection(collection)
+  }
+}
+
+main()
+.catch(err => {
+  console.log('cli.ts, fatal error', err)
+  process.exit(1)
+})

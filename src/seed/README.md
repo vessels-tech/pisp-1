@@ -7,7 +7,7 @@ For now, it is a simple port from the postman approach of seeding the database, 
 
 ## Step Scratchpad - Seed
 
-### seed_hub_account
+### seed_hub_account - done
 ```bash
 curl --location --request POST '{{HOST_CENTRAL_LEDGER}}/participants/Hub/accounts' \
 --header 'Content-Type: application/json' \
