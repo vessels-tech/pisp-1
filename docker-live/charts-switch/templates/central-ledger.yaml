@@ -44,15 +44,17 @@ spec:
             value: kafka:9092
           - name: CLEDG_KAFKA__PRODUCER__TRANSFER__POSITION__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
-          - name: CLEDG_KAFKA__PRODUCER__TRANSFER__NOTIFICATION__EVENT__config__rdkafkaConf__metadata.broker.list
+          - name: CLEDG_KAFKA__PRODUCER__NOTIFICATION__EVENT__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
-          - name: CLEDG_KAFKA__PRODUCER__TRANSFER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
+          - name: CLEDG_KAFKA__PRODUCER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__BULK__PREPARE__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__BULK__PROCESSING__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__BULK__FULFIL__config__rdkafkaConf__metadata.broker.list
+            value: kafka:9092
+          - name: CLEDG_KAFKA__CONSUMER__BULK__GET__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__TRANSFER__PREPARE__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
@@ -64,6 +66,8 @@ spec:
             value: kafka:9092
           - name: CLEDG_KAFKA__CONSUMER__ADMIN__TRANSFER__config__rdkafkaConf__metadata.broker.list
             value: kafka:9092
+          - name: LOG_LEVEL
+            value: debug
         # command: [ "sh", "-c", "tail -f /dev/null" ]
         securityContext:
           runAsUser: 0
