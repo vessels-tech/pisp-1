@@ -20,8 +20,7 @@ spec:
     spec:
       containers:
       - name: auth-service
-        # TODO: v11.2.2 not working... no typescript for some reason
-        image: mojaloop/auth-service:v11.2.2
+        image: mojaloop/auth-service:v11.2.4
         livenessProbe:
           initialDelaySeconds: 30
           httpGet:

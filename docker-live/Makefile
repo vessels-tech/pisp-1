@@ -92,6 +92,7 @@ health-check: health-check-switch health-check-participants
 health-check-switch:
 	@echo 'Checking health of switch services'
 	curl -s $(ELB_URL)/central-ledger/health | jq
+	# curl -s $(ELB_URL)/auth-service/health | jq
 	curl -s $(ELB_URL)/quoting-service/health | jq
 	curl -s $(ELB_URL)/ml-api-adapter/health | jq
 	curl -s $(ELB_URL)/account-lookup-service/health | jq
