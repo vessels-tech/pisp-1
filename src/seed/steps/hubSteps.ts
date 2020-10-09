@@ -1,15 +1,12 @@
 
-import { GlobalConfig } from 'seed/config';
-import Requests from 'seed/requests';
-import { FailureResult, RunResult, SuccessResult } from 'seed/runResult';
-import { SeedStep } from "seed/seed";
-import { wrapWithRunResult } from 'seed/utils';
+import { GlobalConfig } from '../config';
+import Requests from '../requests';
+import { SeedStep } from '../types';
+import { wrapWithRunResult } from '../utils';
 import { ConstConfig, GenericSteps } from './genericSteps';
 
 
-
-
-// const config
+// Step Constant config
 // This won't change dynamically
 const constConfig: ConstConfig =  {
   id: 'hubsteps',
@@ -34,8 +31,49 @@ const stepGenerator = (config: GlobalConfig): Array<SeedStep> => {
         }
       }))
     },
+    {
+      name: 'setup `HUB_RECONCILIATION` account',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postHubAccount(config.urls.centralLedger, {
+        // TODO: better config for different participant ids
+        fspiopSource: 'payerfsp',
+        body: {
+          type: "HUB_RECONCILIATION",
+          currency: config.currency
+        }
+      }))
+    },
+    {
+      name: 'setup `SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+        body: {
+          type: "SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
+          value: 'email@example.com'
+        }
+      }))
+    },
+    {
+      name: 'setup `NET_DEBIT_CAP_ADJUSTMENT_EMAIL`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+        body: {
+          type: "NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
+          value: 'email@example.com'
+        }
+      }))
+    },
+    {
+      name: 'setup `NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+        body: {
+          type: "NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
+          value: 'email@example.com'
+        }
+      }))
+    }
   ]
-
 }
 
 const hubsteps = (config: any) => new GenericSteps(constConfig, config, stepGenerator)

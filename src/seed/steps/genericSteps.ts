@@ -1,6 +1,7 @@
-import { GlobalConfig } from 'seed/config';
-import { RunResult, SuccessResult } from 'seed/runResult';
-import { SeedCollection, SeedStep } from 'seed/types';
+import chalk from 'chalk';
+import { GlobalConfig } from '../config';
+import { Result, RunResult, RunResultType } from '../runResult';
+import { SeedCollection, SeedStep } from '../types';
 
 
 export interface ConstConfig {
@@ -26,10 +27,25 @@ export class GenericSteps implements SeedCollection {
     this.steps = stepGenerator(globalConfig)
   }
 
-
   public async run(): Promise<RunResult> {
-    //TODO: run the steps!
+    let warnings: Array<string> = []
+    let errors: Array<Error> = []
 
-    return SuccessResult.makeSuccessResult()
+    await Promise.all(this.steps.map(async step => {
+      console.log("  - step:", chalk.magenta(step.name))
+      const result = await step.command()
+
+      warnings = warnings.concat(result.warnings)
+      if (result.type === RunResultType.FAILURE) {
+        console.log('result', result.errors)
+        errors = errors.concat(result.errors)
+      }
+    }))
+
+    if (errors.length > 0) {
+      return Result.makeFailureResult(errors, warnings)
+    }
+
+    return Result.makeSuccessResult(warnings)
   }
 }

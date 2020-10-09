@@ -32,6 +32,7 @@ export default class Requests {
     }
 
     const result = await axios(options)
+    console.log('result is', result)
     return result
   }
 

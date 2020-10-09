@@ -1,4 +1,4 @@
-import { FailureResult, RunResult, SuccessResult } from './runResult'
+import { Result, RunResult } from './runResult'
 
 /**
  * @function wrapWithRunResult
@@ -10,9 +10,10 @@ export function wrapWithRunResult (func: () => any): () => Promise<RunResult> {
   return async () => {
     try {
       await func()
-      return SuccessResult.makeSuccessResult()
+      return Result.makeSuccessResult()
     } catch (err) {
-      return FailureResult.makeFailureResult([err])
+      console.log('error!', err)
+      return Result.makeFailureResult([err])
     }
   }
 }
