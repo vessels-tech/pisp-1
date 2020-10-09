@@ -2,8 +2,6 @@ import chalk from 'chalk';
 import { GlobalConfig } from '../config';
 import { Result, RunResult, RunResultType } from '../runResult';
 import { SeedCollection, SeedStep } from '../types';
-
-
 export interface ConstConfig {
   id: string,
   name: string,

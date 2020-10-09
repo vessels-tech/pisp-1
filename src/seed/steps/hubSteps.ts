@@ -31,48 +31,48 @@ const stepGenerator = (config: GlobalConfig): Array<SeedStep> => {
         }
       }))
     },
-    {
-      name: 'setup `HUB_RECONCILIATION` account',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postHubAccount(config.urls.centralLedger, {
-        // TODO: better config for different participant ids
-        fspiopSource: 'payerfsp',
-        body: {
-          type: "HUB_RECONCILIATION",
-          currency: config.currency
-        }
-      }))
-    },
-    {
-      name: 'setup `SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
-        body: {
-          type: "SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
-          value: 'email@example.com'
-        }
-      }))
-    },
-    {
-      name: 'setup `NET_DEBIT_CAP_ADJUSTMENT_EMAIL`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
-        body: {
-          type: "NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
-          value: 'email@example.com'
-        }
-      }))
-    },
-    {
-      name: 'setup `NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
-        body: {
-          type: "NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
-          value: 'email@example.com'
-        }
-      }))
-    }
+    // {
+    //   name: 'setup `HUB_RECONCILIATION` account',
+    //   ignoreFailure: false,
+    //   command: wrapWithRunResult(() => Requests.postHubAccount(config.urls.centralLedger, {
+    //     // TODO: better config for different participant ids
+    //     fspiopSource: 'payerfsp',
+    //     body: {
+    //       type: "HUB_RECONCILIATION",
+    //       currency: config.currency
+    //     }
+    //   }))
+    // },
+    // {
+    //   name: 'setup `SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL`',
+    //   ignoreFailure: false,
+    //   command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+    //     body: {
+    //       type: "SETTLEMENT_TRANSFER_POSITION_CHANGE_EMAIL",
+    //       value: 'email@example.com'
+    //     }
+    //   }))
+    // },
+    // {
+    //   name: 'setup `NET_DEBIT_CAP_ADJUSTMENT_EMAIL`',
+    //   ignoreFailure: false,
+    //   command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+    //     body: {
+    //       type: "NET_DEBIT_CAP_ADJUSTMENT_EMAIL",
+    //       value: 'email@example.com'
+    //     }
+    //   }))
+    // },
+    // {
+    //   name: 'setup `NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL`',
+    //   ignoreFailure: false,
+    //   command: wrapWithRunResult(() => Requests.postHubEndpoints(config.urls.centralLedger, {
+    //     body: {
+    //       type: "NET_DEBIT_CAP_THRESHOLD_BREACH_EMAIL",
+    //       value: 'email@example.com'
+    //     }
+    //   }))
+    // }
   ]
 }
 

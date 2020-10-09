@@ -7,10 +7,13 @@ export interface GlobalConfig {
 
 // TODO: parse config with convict or something
 
+const baseUrl = process.env.ELB_URL
+const scheme = `http`
+
 const config = {
   currency: 'USD',
   urls: {
-    centralLedger: 'localhost:4001'
+    centralLedger: `${scheme}://${baseUrl}/central-ledger`
   }
 }
 

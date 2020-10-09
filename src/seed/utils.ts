@@ -12,7 +12,6 @@ export function wrapWithRunResult (func: () => any): () => Promise<RunResult> {
       await func()
       return Result.makeSuccessResult()
     } catch (err) {
-      console.log('error!', err)
       return Result.makeFailureResult([err])
     }
   }

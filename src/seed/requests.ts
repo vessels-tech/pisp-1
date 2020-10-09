@@ -24,6 +24,7 @@ export default class Requests {
       method: 'post',
       url,
       headers: {
+        'Content-Type': 'application/json',
         'FSPIOP-Source': request.fspiopSource,
       },
       data: {
@@ -31,9 +32,21 @@ export default class Requests {
       }
     }
 
-    const result = await axios(options)
-    console.log('result is', result)
-    return result
+    try {
+      const result = await axios(options)
+      return result;
+    } catch (err) {
+      if (err.response) {
+        console.log(`postHubAccount failed with status: ${err.response.status}`)
+        console.log(err.response.data)
+
+        // TODO: better error handling
+        throw new Error(`Status: ${err.response.status} Message: ${JSON.stringify(err.response.data)}`)
+      }
+      console.log('Generic Error', err.message);
+      throw err
+    }
+
   }
 
   public static async postHubEndpoints(host: string, request: PostHubEndpointRequest): Promise<AxiosResponse<any>> {
