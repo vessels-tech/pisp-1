@@ -20,41 +20,6 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
         }
       }))
     },
-    // TODO: there are some pisp specific endpoints and dfsp specific endpoints that could be moved
-    // into their specific places
-    {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_PUT`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_PUT',
-          value: `${participant.fspiopCallbackUrl}/participants/{{partyIdType}}/{{partyIdentifier}}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_PUT_ERROR',
-          value: `${participant.fspiopCallbackUrl}/participants/{{partyIdType}}/{{partyIdentifier}}/error`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_BATCH_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_BATCH_PUT_ERROR',
-          value: `${participant.fspiopCallbackUrl}/participants/{{requestId}}/error`
-        }
-      }))
-    },
     {
       name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTIES_GET`',
       ignoreFailure: false,
@@ -88,6 +53,215 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
         }
       }))
     },
+
+    {
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_TRX_REQ_SERVICE`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'FSPIOP_CALLBACK_URL_TRX_REQ_SERVICE',
+          // TODO: this looks wrong to me!
+          value: `${participant.fspiopCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_POST`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_POST',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PUT`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_PUT',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_PUT_ERROR',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_POST`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_REQUEST_POST',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_PUT`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_REQUEST_PUT',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_REQUEST_PUT_ERROR',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CREATE_CREDENTIAL_POST`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CREATE_CREDENTIAL_POST',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_POST`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_POST',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_GET`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_GET',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_PUT`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_PUT',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_CONSENT_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_CONSENT_PUT_ERROR',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    }
+  ]
+}
+
+const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, participant: DFSPParticipant): Array<SeedStep> => {
+  return [
+    {
+      name: 'add initial position and limits',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postParticipantsPositionAndLimits(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          currency: globalConfig.currency,
+          limit: {
+            type: "NET_DEBIT_CAP",
+            value: 1000000
+          },
+          initialPosition: 0
+        }
+      }))
+    },
+    {
+      name: 'create settlement account',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postAccount(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        accountId: participant.settlementAccountId,
+        body: {
+          transferId: uuid.v4(),
+          externalReference: "none",
+          action: "recordFundsIn",
+          reason: "Initial settlement amount",
+          amount: {
+            amount: "1000000",
+            currency: globalConfig.currency
+          }
+        }
+      }))
+    },
+    // TODO: there are some pisp specific endpoints and dfsp specific endpoints that could be moved
+    // into their specific places
+    {
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_PUT`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_PUT',
+          value: `${participant.fspiopCallbackUrl}/participants/{{partyIdType}}/{{partyIdentifier}}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_PUT_ERROR',
+          value: `${participant.fspiopCallbackUrl}/participants/{{partyIdType}}/{{partyIdentifier}}/error`
+        }
+      }))
+    },
+
+    {
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_BATCH_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'FSPIOP_CALLBACK_URL_PARTICIPANT_BATCH_PUT_ERROR',
+          value: `${participant.fspiopCallbackUrl}/participants/{{requestId}}/error`
+        }
+      }))
+    },
+
     {
       name: 'register endpoint `FSPIOP_CALLBACK_URL_QUOTES`',
       ignoreFailure: false,
@@ -200,50 +374,43 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
       }))
     },
     {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_TRX_REQ_SERVICE`',
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT`',
       ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {
-          type: 'FSPIOP_CALLBACK_URL_TRX_REQ_SERVICE',
-          // TODO: this looks wrong to me!
-          value: `${participant.fspiopCallbackUrl}/bulkTransfers/{{id}}/error`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_POST`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_POST',
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT',
           value: `${participant.thirdpartyCallbackUrl}`
         }
       }))
     },
     {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PUT`',
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR`',
       ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_PUT',
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR',
           value: `${participant.thirdpartyCallbackUrl}`
         }
       }))
     },
     {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PUT_ERROR`',
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_AUTHORIZATIONS`',
       ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_PUT_ERROR',
+          type: 'FSPIOP_CALLBACK_URL_AUTHORIZATIONS',
           value: `${participant.thirdpartyCallbackUrl}`
         }
       }))
     },
+  ]
+}
+
+const makePispSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, participant: Participant): Array<SeedStep> => {
+  return [
     {
       // TODO: this one is broken...
       name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PATCH`',
@@ -267,172 +434,7 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
         }
       }))
     },
-    {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-
-
-    {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_POST`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_REQUEST_POST',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_PUT`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_REQUEST_PUT',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_REQUEST_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_REQUEST_PUT_ERROR',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CREATE_CREDENTIAL_POST`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CREATE_CREDENTIAL_POST',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_POST`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_POST',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_GET`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_GET',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_PUT`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_PUT',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_CONSENT_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_CONSENT_PUT_ERROR',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_AUTHORIZATIONS`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'FSPIOP_CALLBACK_URL_AUTHORIZATIONS',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
   ]
-}
-
-const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, participant: DFSPParticipant): Array<SeedStep> => {
-  return [
-    {
-      name: 'add initial position and limits',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postParticipantsPositionAndLimits(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          currency: globalConfig.currency,
-          limit: {
-            type: "NET_DEBIT_CAP",
-            value: 1000000
-          },
-          initialPosition: 0
-        }
-      }))
-    },
-    {
-      name: 'create settlement account',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postAccount(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        accountId: participant.settlementAccountId,
-        body: {
-          transferId: uuid.v4(),
-          externalReference: "none",
-          action: "recordFundsIn",
-          reason: "Initial settlement amount",
-          amount: {
-            amount: "1000000",
-            currency: globalConfig.currency
-          }
-        }
-      }))
-    },
-  ]
-}
-
-const makePispSteps = (_constConfig: ConstConfig, _globalConfig: GlobalConfig, _participant: Participant): Array<SeedStep> => {
-  return []
 }
 
 
