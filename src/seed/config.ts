@@ -65,14 +65,14 @@ const config: GlobalConfig = {
     centralLedger: `${scheme}://${baseUrl}/central-ledger`
   },
   applicationUrls: {
-    // TODO: run the simulator for oracles...
-    oracle: `${scheme}://${baseUrl}/oracle/todo`,
+    oracle: `${scheme}://${baseUrl}/oracle-simulator`,
   },
   participants: [
     {
       id: 'dfspa',
       type: ParticipantType.DFSP,
-      settlementAccountId: '1',
+      // TODO: how do we get this?!?!
+      settlementAccountId: '4',
       // For our demo, Participants are on the same deployment as switch
       // TODO: verify this base url!
       simulatorAdminUrl: `${scheme}://${baseUrl}/dfspa/mojaloop-simulator/test`,
@@ -105,7 +105,8 @@ const config: GlobalConfig = {
     {
       id: 'dfspb',
       type: ParticipantType.DFSP,
-      settlementAccountId: '2',
+      // TODO: this is dynamic - how do we get this beforehand?
+      settlementAccountId: '6',
       // For our demo, Participants are on the same deployment as switch
       simulatorAdminUrl: `${scheme}://${baseUrl}/dfspa/mojaloop-simulator/test`,
       fspiopCallbackUrl: `${scheme}://${baseUrl}/dfspb/sdk-scheme-adapter/inbound`,
