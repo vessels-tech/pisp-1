@@ -52,7 +52,7 @@ sdk_scheme_adapter:
     # ideally we would deploy this with proper dns, and be able to
     # give these better values
 
-    ALS_ENDPOINT: "account-lookup-service:4001"
+    ALS_ENDPOINT: "account-lookup-service:4002"
     QUOTES_ENDPOINT: "quoting-service:3002"
     TRANSFERS_ENDPOINT: "ml-api-adapter:3000"
     # TRANSACTION_REQUESTS_ENDPOINT is not yet added in SDK, so using PEER_ENDPOINT
