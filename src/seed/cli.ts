@@ -9,13 +9,13 @@ import chalk from 'chalk';
 const runCollection = async (collection: SeedCollection) => {
   const collectionNameFormatted = chalk.blue(collection.name)
 
-  console.log(`  ${chalk.bold('Running')}: ${collectionNameFormatted}\n  ${chalk.bold('Description')}: ${collection.description}`)
+  console.log(`\n\n  ${chalk.bold('Running')}: ${collectionNameFormatted}\n  ${chalk.bold('Description')}: ${collection.description}`)
   console.log(`  |`)
   const result = await collection.run()
   console.log(`  |`)
   switch (result.type) {
     case RunResultType.SUCCESS: {
-      console.log(`${collectionNameFormatted} ${chalk.green(`Passed`)}`)
+      console.log(`  ${collectionNameFormatted} ${chalk.green(`Passed`)}`)
       if (result.warnings.length > 0) {
         console.log(`  ${chalk.yellow('Passed with warnings:')} \n    - ${result.warnings.join('\n    - ')}`)
       }

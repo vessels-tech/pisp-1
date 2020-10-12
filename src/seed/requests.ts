@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import { Party } from './config'
 
 
 export type PostHubAccountRequest = {
@@ -68,6 +69,25 @@ export type PostEndpointsRequest = {
     value: string,
   }
 }
+
+export type PostSimulatorPartyRequest = {
+  body: Party
+}
+
+export type PostALSParticipantRequest = {
+  headers: {
+    'FSPIOP-Source': string,
+  },
+  idType: string,
+  idValueOrSubType: string,
+  idValue?: string,
+  body: {
+    fspId: string,
+    currency: string
+  }
+}
+
+
 export default class Requests {
   public static async postHubAccount(host: string, request: PostHubAccountRequest): Promise<AxiosResponse<any>> {
     const url = `${host}/participants/Hub/accounts`
@@ -108,6 +128,7 @@ export default class Requests {
       url,
       headers: {
         'Content-Type': 'application/json',
+        Date: (new Date()).toISOString()
       },
       data: {
         ...request.body
@@ -182,6 +203,45 @@ export default class Requests {
     return this.executeRequest(options)
   }
 
+  public static async postSimulatorParty(host: string, request: PostSimulatorPartyRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/repository/parties`
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+    return this.executeRequest(options)
+  }
+
+  public static async postALSParticipant(host: string, request: PostALSParticipantRequest): Promise<AxiosResponse<any>> {
+    const url = `${host}/participants/${request.idType}/${request.idValueOrSubType}` + (request.idValue ? `/${request.idValue}` : '')
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url,
+      headers: {
+        'Accept': 'application/vnd.interoperability.participants+json;version=1',
+        'Content-Type': 'application/vnd.interoperability.participants+json;version=1.0',
+        Date: (new Date()).toISOString(),
+        ...request.headers
+      },
+      data: {
+        ...request.body
+      }
+    }
+
+
+    console.log('options are', options)
+
+    return this.executeRequest(options)
+
+  }
+
   private static async executeRequest(options: AxiosRequestConfig): Promise<AxiosResponse<any>> {
     try {
       const result = await axios(options)
@@ -198,6 +258,4 @@ export default class Requests {
       throw err
     }
   }
-
-
 }

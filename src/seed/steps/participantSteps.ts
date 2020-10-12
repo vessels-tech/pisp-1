@@ -1,5 +1,5 @@
 
-import uuid from 'uuid'
+import { v4 as uuid} from 'uuid'
 
 import Requests from '../requests';
 import { wrapWithRunResult } from '..//utils';
@@ -12,7 +12,7 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
   return [
     {
       name: 'add participant',
-      ignoreFailure: false,
+      ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postParticipants(globalConfig.urls.centralLedger, {
         body: {
           name: participant.id,
@@ -209,12 +209,12 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
     },
     {
       name: 'create settlement account',
-      ignoreFailure: true,
+      ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postAccount(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         accountId: participant.settlementAccountId,
         body: {
-          transferId: uuid.v4(),
+          transferId: uuid(),
           externalReference: "none",
           action: "recordFundsIn",
           reason: "Initial settlement amount",
@@ -457,7 +457,7 @@ function makeParticipantSteps(participant: Participant) {
     }
   }
 
-  return (config: any) => new GenericSteps(constConfig, config, stepGenerator)
+  return (config: GlobalConfig) => new GenericSteps(constConfig, config, stepGenerator)
 }
 
 export default makeParticipantSteps

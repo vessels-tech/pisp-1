@@ -20,8 +20,9 @@ const stepGenerator = (config: GlobalConfig): Array<SeedStep> => {
   return [
     {
       name: 'create a default oracle',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postOracles(config.urls.centralLedger, {
+      // This command is not idempotent
+      ignoreFailure: true,
+      command: wrapWithRunResult(() => Requests.postOracles(config.urls.alsAdmin, {
         body: {
           "oracleIdType": "MSISDN",
           "endpoint": {
