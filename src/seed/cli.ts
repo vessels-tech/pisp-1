@@ -32,8 +32,6 @@ const runCollection = async (collection: SeedCollection) => {
   }
 }
 
-
-
 async function main() {
   for (const collection of collections) {
     await runCollection(collection)

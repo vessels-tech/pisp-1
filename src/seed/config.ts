@@ -71,10 +71,10 @@ const config: GlobalConfig = {
     {
       id: 'dfspa',
       type: ParticipantType.DFSP,
-      // TODO: how do we get this?!?!
+      // TODO: this is a hack for now, but we actually need to query the admin-api
+      // to get this value before setting it :(
       settlementAccountId: '4',
       // For our demo, Participants are on the same deployment as switch
-      // TODO: verify this base url!
       simulatorAdminUrl: `${scheme}://${baseUrl}/dfspa/mojaloop-simulator/test`,
       fspiopCallbackUrl: `${scheme}://${baseUrl}/dfspa/sdk-scheme-adapter/inbound`,
       thirdpartyCallbackUrl: `${scheme}://${baseUrl}/dfspa/thirdparty-scheme-adapter/inbound`,
@@ -105,7 +105,8 @@ const config: GlobalConfig = {
     {
       id: 'dfspb',
       type: ParticipantType.DFSP,
-      // TODO: this is dynamic - how do we get this beforehand?
+      // TODO: this is a hack for now, but we actually need to query the admin-api
+      // to get this value before setting it :(
       settlementAccountId: '6',
       // For our demo, Participants are on the same deployment as switch
       simulatorAdminUrl: `${scheme}://${baseUrl}/dfspa/mojaloop-simulator/test`,
