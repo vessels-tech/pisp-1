@@ -21,15 +21,15 @@ export interface DFSPParticipant {
   id: string,
   type: ParticipantType.DFSP
   settlementAccountId: string
-  fspiopCallbackUrl: '',
-  thirdpartyCallbackUrl: ''
+  fspiopCallbackUrl: string,
+  thirdpartyCallbackUrl: string
 }
 
 export interface PISPParticipant {
   id: string,
   type: ParticipantType.PISP
-  fspiopCallbackUrl: '',
-  thirdpartyCallbackUrl: ''
+  fspiopCallbackUrl: string,
+  thirdpartyCallbackUrl: string
 }
 
 // TODO: parse config with convict or something
@@ -49,25 +49,27 @@ const config = {
     oracle: 'TODO',
   },
   participants: [
-    {
-      id: 'dfspa',
-      type: ParticipantType.DFSP,
-      settlementAccountId: '1',
-      fspiopCallbackUrl: '',
-      thirdpartyBaseUrl: ''
-    },
-    {
-      id: 'dfspb',
-      type: ParticipantType.DFSP,
-      settlementAccountId: '2',
-      fspiopCallbackUrl: '',
-      thirdpartyBaseUrl: ''
-    },
+    // {
+    //   id: 'dfspa',
+    //   type: ParticipantType.DFSP,
+    //   settlementAccountId: '1',
+    //   // For our demo, Participants are on the same deployment
+    //   fspiopCallbackUrl: `${scheme}://${baseUrl}/dfspa/sdk-scheme-adapter/inbound`,
+    //   thirdpartyBaseUrl: `${scheme}://${baseUrl}/dfspa/thirdparty-scheme-adapter/inbound`
+    // },
+    // {
+    //   id: 'dfspb',
+    //   type: ParticipantType.DFSP,
+    //   settlementAccountId: '2',
+    //   fspiopCallbackUrl: `${scheme}://${baseUrl}/dfspb/sdk-scheme-adapter/inbound`,
+    //   thirdpartyBaseUrl: `${scheme}://${baseUrl}/dfspb/thirdparty-scheme-adapter/inbound`
+    // },
     {
       id: 'pispa',
       type: ParticipantType.PISP,
-      fspiopCallbackUrl: '',
-      thirdpartyBaseUrl: ''
+      // For PISP, 3p-scheme-adapter gets callbacks from switch
+      fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
+      thirdpartyBaseUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
     },
   ]
 }

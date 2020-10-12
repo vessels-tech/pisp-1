@@ -15,20 +15,19 @@ const runCollection = async (collection: SeedCollection) => {
   console.log(`  |`)
   switch (result.type) {
     case RunResultType.SUCCESS: {
-      console.log(`  ${collectionNameFormatted} Passed`)
+      console.log(`${collectionNameFormatted} ${chalk.green(`Passed`)}`)
       if (result.warnings.length > 0) {
-        console.log(`  - passed with warnings: ${result.warnings.join('\n')}`)
+        console.log(`  ${chalk.yellow('Passed with warnings:')} \n    - ${result.warnings.join('\n    - ')}`)
       }
 
       break;
     }
     case RunResultType.FAILURE:
-      console.log(`  ${collectionNameFormatted} Failed.`)
+      console.log(`${collectionNameFormatted} ${chalk.red(`Failed`)}`)
       if (result.warnings.length > 0) {
-        console.log(`failed with warnings: ${result.warnings.join('\n')}`)
+        console.log(`  ${chalk.yellow('Failed with warnings:')} \n    - ${result.warnings.join('\n    - ')}`)
       }
-      console.log(`failed with errors: ${result.errors.join('\n')}`)
-
+      console.log(`  ${chalk.red('Failed with errors:')} \n    - ${result.errors.join('\n    - ')}`)
       break;
   }
 }

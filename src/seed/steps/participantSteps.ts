@@ -194,7 +194,7 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
   return [
     {
       name: 'add initial position and limits',
-      ignoreFailure: false,
+      ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postParticipantsPositionAndLimits(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {
@@ -209,7 +209,7 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
     },
     {
       name: 'create settlement account',
-      ignoreFailure: false,
+      ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postAccount(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         accountId: participant.settlementAccountId,
@@ -225,8 +225,6 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
         }
       }))
     },
-    // TODO: there are some pisp specific endpoints and dfsp specific endpoints that could be moved
-    // into their specific places
     {
       name: 'register endpoint `FSPIOP_CALLBACK_URL_PARTICIPANT_PUT`',
       ignoreFailure: false,
@@ -412,9 +410,9 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
 const makePispSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, participant: Participant): Array<SeedStep> => {
   return [
     {
-      // TODO: this one is broken...
       name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PATCH`',
-      ignoreFailure: false,
+      // TODO: fix this - we shouldn't have to ignore failure here
+      ignoreFailure: true,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {
