@@ -104,6 +104,7 @@ health-check-switch:
 health-check-participants:
 	@echo 'Checking health of all participants'
 # note: not all health checks contain a response body
+# so they are commented out - comments are left for completeness
 # dfspa
 # No health check on /inbound
 # curl -s $(ELB_URL)/dfspa/sdk-scheme-adapter/inbound | jq
@@ -135,10 +136,8 @@ health-check-participants:
 #@ curl -s $(ELB_URL)/pispa/mojaloop-simulator/test | jq
 
 
-
-# TODO: enable these later
-# transfer-api:
-# 	./scripts/_test_transfer_api_v1.0.sh
+transfer-p2p:
+	./_test_transfer.sh
 
 ##
 # Kube Tools
