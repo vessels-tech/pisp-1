@@ -17,6 +17,7 @@ For a more detailed breakdown of the api calls, Refer to the detailed API flows:
 
 A PISP can issue a `GET /thirdpartyRequests/{id}/transactions` to find the status of a transaction request.
 
+<<<<<<< HEAD
 ![PISPTransferSimpleAPI](../out/transfer/get_transaction_request/PISPGetTransactionRequest.png)
 
 1. PISP issues a `GET /thirdpartyRequests/transactions/{id}`
@@ -43,6 +44,9 @@ A PISP can issue a `GET /thirdpartyRequests/{id}/transactions` to find the statu
 1. Switch validates request and responds with `200 OK`
 1. Switch looks up the endpoint for `pispa` for forwards to PISP
 1. PISP validates the request and responds with `200 OK`
+=======
+[ todo: in mojaloop/project#1748 ]
+>>>>>>> a53fbb93aa38dcf8244c9ee92c6bd0bf1e19496e
 
 ### Error Conditions
 
