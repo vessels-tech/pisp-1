@@ -2,7 +2,6 @@
 
 A live lab environment for PISP Demos. Deployed using K8s + Helm
 
-
 ## Prerequisites
 - `helm` v3 or later
 - `kubectl` and access to a running cluster
@@ -58,6 +57,8 @@ For this lab, we use a simplified version of the Mojaloop Helm charts. This incl
 
 Additionally, the install is broken into separate pieces:
 
-1. **Prerequisites:** mysql, kafka, with a combination of helm and kafka (see `.install-base` in the [`./Makefile`](./Makefile))
+1. **Prerequisites:** mysql, kafka, with a combination of helm and kafka: [`./charts-base`](./charts-base) (see `.install-base` in the [`./Makefile`](./Makefile))
+> Q: Why separate out the installation of mysql and kafka from the switch components?
+> A: (1) To simplify develompment of the charts, and (2) to speed up the tearing down and reinstalling of the switch components - kafka tends to take quite a while to get up and running, and removing and reinstalling mysql with persistent volume claims can be tedious
 2. **Switch:** The application expressed as helm charts in [`./charts-switch`](./charts-switch)
 3. **Participants:** The DFSP and PISP participants. Defined in helm charts at [`./charts-participant`](./charts-participant), and customized using `values.yml` files for either a PISP or DFSP
