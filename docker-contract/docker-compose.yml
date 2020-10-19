@@ -6,7 +6,9 @@ networks:
 
 services:
   ml-testing-toolkit:
-    image: mojaloop/ml-testing-toolkit:v11.2.3
+    # image: mojaloop/ml-testing-toolkit:v11.2.3
+    # tmp - lewis bad internet
+    image: mojaloop/ml-testing-toolkit:v11.2.2
     container_name: dl_ml-testing-toolkit
     volumes:
       - "./ml-testing-toolkit/spec_files:/opt/mojaloop-testing-toolkit/spec_files"
@@ -20,11 +22,13 @@ services:
     extra_hosts:
       - "pisp-sim-scheme-adapter:172.17.0.1"
       - "ml-testing-toolkit:172.17.0.1"
-      # allow the ttk to talk to host on a mac 
+      # allow the ttk to talk to host on a mac
       - "mojaloop.pisp-demo-server.local:192.168.65.2"
 
   ml-testing-toolkit-ui:
-    image: mojaloop/ml-testing-toolkit-ui:v11.2.1
+    # image: mojaloop/ml-testing-toolkit-ui:v11.2.1
+    # tmp -lewis bad internet
+    image: mojaloop/ml-testing-toolkit-ui:v11.2.0
     container_name: dl_ml-testing-toolkit-ui
     ports:
       - "6060:6060"
