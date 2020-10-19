@@ -160,6 +160,7 @@ paths:
                         type: string
                         enum:
                           - WEB
+                          - OTP
                         description: |
                           The web auth channel being used for PUT consentRequest/{ID} request.
                     callbackUri:

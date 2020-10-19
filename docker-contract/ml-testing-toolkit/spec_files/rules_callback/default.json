@@ -1038,7 +1038,7 @@
         "body": {
           "initiatorId": "pispA",
           "authChannels": [
-            "WEB"
+            "OTP"
           ],
           "scopes": [
             {
