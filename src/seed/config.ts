@@ -166,8 +166,20 @@ const config: GlobalConfig = {
       // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
       // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
       // Location of demo server on localtunnel
-      fspiopCallbackUrl: `https://tough-ladybug-9.loca.lt/mojaloop`,
-      thirdpartyCallbackUrl: `https://tough-ladybug-9.loca.lt/mojaloop`
+      fspiopCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`,
+      thirdpartyCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`
+    },
+    // Add another participant: pisp
+    // this is hardcoded in the sdk-scheme-adapter postAuthorizations
+    {
+      id: 'pisp',
+      type: ParticipantType.PISP,
+      // For PISP, 3p-scheme-adapter gets callbacks from switch
+      // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
+      // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
+      // Location of demo server on localtunnel
+      fspiopCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`,
+      thirdpartyCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop/`
     },
   ]
 }

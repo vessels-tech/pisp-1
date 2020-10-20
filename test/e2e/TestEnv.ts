@@ -36,6 +36,8 @@ export interface TestEnvType {
   };
 }
 
+// Custom env for live test
+const baseUrl = process.env.ELB_URL
 const TestEnv: TestEnvType = {
   amount: '100',
   amountType: 'SEND',
@@ -44,16 +46,20 @@ const TestEnv: TestEnvType = {
     dfspb: 'http://localhost:10003',
     pisp: 'http://localhost:11003',
     pispContract: 'http://localhost:12003',
-    dfspaSchemeAdapter: 'http://localhost:5002',
+
+    dfspaSchemeAdapter: `${baseUrl}/dfspa/sdk-scheme-adapter/outbound`,
     dfspaThirdpartySchemeAdapterInbound: 'http://localhost:5005',
     dfspaThirdpartySchemeAdapterOutbound: 'http://localhost:5006',
-    dfspbSchemeAdapter: 'http://localhost:6002',
+
+    dfspbSchemeAdapter: `${baseUrl}/dfspb/sdk-scheme-adapter/outbound`,
     dfspbThirdpartySchemeAdapterInbound: 'http://localhost:6005',
     dfspbThirdpartySchemeAdapterOutbound: 'http://localhost:6006',
-    pispSchemeAdapter: 'http://localhost:7002',
+
+    pispSchemeAdapter: `${baseUrl}/pispa/thirdparty-scheme-adapter/outbound`,
     pispThirdpartySchemeAdapterInbound: 'http://localhost:7005',
     pispThirdpartySchemeAdapterOutbound: 'http://localhost:7006',
     pispContractSchemeAdapter: 'http://localhost:8002',
+
     mlTestingToolkit: 'http://localhost:15000',
     mlTestingToolkitInbound: 'http://localhost:5050'
   },
@@ -69,7 +75,7 @@ const TestEnv: TestEnvType = {
     }
   },
   parties: {
-    pisp: 'pisp'
+    pisp: 'pispa'
   }
 }
 

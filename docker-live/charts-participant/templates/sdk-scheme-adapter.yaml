@@ -22,23 +22,27 @@ spec:
     spec:
       containers:
         - name: sdk-scheme-adapter
-          image: mojaloop/sdk-scheme-adapter:v10.6.2.1-pisp
-          livenessProbe:
-            initialDelaySeconds: 30
-            httpGet:
-              path: /
-              port: 4001
-          readinessProbe:
-            initialDelaySeconds: 30
-            httpGet:
-              path: /
-              port: 4001
+          image: mojaloop/sdk-scheme-adapter:v10.6.2.5-pisp
+          # tmp: disabled these for easier logging
+          # health checks are noisy!
+          # livenessProbe:
+          #   initialDelaySeconds: 30
+          #   httpGet:
+          #     path: /
+          #     port: 4001
+          # readinessProbe:
+          #   initialDelaySeconds: 30
+          #   httpGet:
+          #     path: /
+          #     port: 4001
           env:
           - name: CACHE_HOST
             value: {{ $participantId }}-redis
           - name: BACKEND_ENDPOINT
             # TODO this is the /simulator api, not sure if that's correct
             value: {{ $participantId }}-mojaloop-simulator:3000
+          - name: ENABLE_PISP_MODE
+            value: 'true'
           - name: DFSP_ID
             value: {{ $participantId | quote }}
           {{- range $k, $v := .Values.sdk_scheme_adapter.env }}

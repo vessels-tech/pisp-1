@@ -185,7 +185,40 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
           value: `${participant.thirdpartyCallbackUrl}`
         }
       }))
-    }
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
+    {
+      name: 'register endpoint `FSPIOP_CALLBACK_URL_AUTHORIZATIONS`',
+      ignoreFailure: false,
+      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
+        participantId: participant.id,
+        body: {
+          type: 'FSPIOP_CALLBACK_URL_AUTHORIZATIONS',
+          value: `${participant.thirdpartyCallbackUrl}`
+        }
+      }))
+    },
   ]
 }
 
@@ -368,40 +401,7 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
           value: `${participant.fspiopCallbackUrl}/bulkTransfers/{{id}}/error`
         }
       }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'TP_CB_URL_TRANSACTION_REQUEST_AUTH_PUT_ERROR',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
-    {
-      name: 'register endpoint `FSPIOP_CALLBACK_URL_AUTHORIZATIONS`',
-      ignoreFailure: false,
-      command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
-        participantId: participant.id,
-        body: {
-          type: 'FSPIOP_CALLBACK_URL_AUTHORIZATIONS',
-          value: `${participant.thirdpartyCallbackUrl}`
-        }
-      }))
-    },
+    }
   ]
 }
 
