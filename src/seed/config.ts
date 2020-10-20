@@ -166,8 +166,8 @@ const config: GlobalConfig = {
       // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
       // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
       // Location of demo server on localtunnel
-      fspiopCallbackUrl: `https://red-hound-18.loca.lt/mojaloop`,
-      thirdpartyCallbackUrl: `https://red-hound-18.loca.lt/mojaloop`
+      fspiopCallbackUrl: `https://tough-ladybug-9.loca.lt/mojaloop`,
+      thirdpartyCallbackUrl: `https://tough-ladybug-9.loca.lt/mojaloop`
     },
   ]
 }
