@@ -36,6 +36,8 @@ spec:
             value: http://central-ledger:3001
           - name: ALS_DATABASE__HOST
             value: mysql-als
+          - name: LOG_LEVEL
+            value: info
 ---
 apiVersion: v1
 kind: Service

@@ -135,6 +135,27 @@ const config: GlobalConfig = {
               address: "moja.burgundy.43638980-f49gk439f-6a5f-543d-987654321"
             }
           ]
+        },
+        {
+          displayName: "JT",
+          firstName: "Justin",
+          middleName: "O",
+          lastName: "Timberlake",
+          dateOfBirth: "1970-01-01",
+          idType: "MSISDN",
+          idValue: "IN9876543211",
+          accounts: [
+            {
+              currency,
+              description: "savings",
+              address: "moja.burgundy.76542756-f49gk439f-6a5f-543d-987654321"
+            },
+            {
+              currency,
+              description: "checkings",
+              address: "moja.burgundy.43638980-f49gk439f-6a5f-543d-987654321"
+            }
+          ]
         }
       ]
     },
@@ -142,8 +163,11 @@ const config: GlobalConfig = {
       id: 'pispa',
       type: ParticipantType.PISP,
       // For PISP, 3p-scheme-adapter gets callbacks from switch
-      fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
-      thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
+      // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
+      // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
+      // Location of demo server on localtunnel
+      fspiopCallbackUrl: `https://red-hound-18.loca.lt/mojaloop`,
+      thirdpartyCallbackUrl: `https://red-hound-18.loca.lt/mojaloop`
     },
   ]
 }

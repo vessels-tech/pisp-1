@@ -81,4 +81,4 @@ spec:
           - path: /thirdparty-api-adapter(/|$)(.*)
             backend:
               serviceName: thirdparty-api-adapter
-              servicePort: 4004
+              servicePort: 3008
