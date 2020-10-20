@@ -32,8 +32,9 @@ spec:
             path: /health
             port: 3002
         env:
+          # TODO: why do need a db here??
           - name: QUOTE_DATABASE__HOST
-            value: mysql
+            value: mysql-cl
           - name: QUOTE_SWITCH_ENDPOINT
             value: http://centralledger:3001
         # command: [ "sh", "-c", "tail -f /dev/null" ]

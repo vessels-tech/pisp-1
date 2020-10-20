@@ -53,7 +53,6 @@ const makeCommonSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, 
         }
       }))
     },
-
     {
       name: 'register endpoint `FSPIOP_CALLBACK_URL_TRX_REQ_SERVICE`',
       ignoreFailure: false,
@@ -267,8 +266,7 @@ const makeDfspSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
         participantId: participant.id,
         body: {
           type: 'FSPIOP_CALLBACK_URL_QUOTES',
-          // TODO: this looks wrong to me...
-          value: `${participant.fspiopCallbackUrl}/quotes`
+          value: `${participant.fspiopCallbackUrl}`
         }
       }))
     },
@@ -411,8 +409,7 @@ const makePispSteps = (_constConfig: ConstConfig, globalConfig: GlobalConfig, pa
   return [
     {
       name: 'register endpoint `TP_CB_URL_TRANSACTION_REQUEST_PATCH`',
-      // TODO: fix this - we shouldn't have to ignore failure here
-      ignoreFailure: true,
+      ignoreFailure: false,
       command: wrapWithRunResult(() => Requests.postEndpoint(globalConfig.urls.centralLedger, {
         participantId: participant.id,
         body: {

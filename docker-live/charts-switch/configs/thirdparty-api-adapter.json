@@ -10,7 +10,7 @@
     "expiresIn": 180000,
     "generateTimeout": 30000
   },
-  "ENDPOINT_SERVICE_URL": "http://centralledger:3001",
+  "ENDPOINT_SERVICE_URL": "http://central-ledger:3001",
   "ERROR_HANDLING": {
     "includeCauseExtension": true,
     "truncateExtensions": true
