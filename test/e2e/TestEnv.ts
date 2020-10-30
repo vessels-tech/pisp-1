@@ -47,15 +47,15 @@ const TestEnv: TestEnvType = {
     pisp: 'http://localhost:11003',
     pispContract: 'http://localhost:12003',
 
-    dfspaSchemeAdapter: `${baseUrl}/dfspa/sdk-scheme-adapter/outbound`,
+    dfspaSchemeAdapter: `http://${baseUrl}/dfspa/sdk-scheme-adapter/outbound`,
     dfspaThirdpartySchemeAdapterInbound: 'http://localhost:5005',
     dfspaThirdpartySchemeAdapterOutbound: 'http://localhost:5006',
 
-    dfspbSchemeAdapter: `${baseUrl}/dfspb/sdk-scheme-adapter/outbound`,
+    dfspbSchemeAdapter: `http://${baseUrl}/dfspb/sdk-scheme-adapter/outbound`,
     dfspbThirdpartySchemeAdapterInbound: 'http://localhost:6005',
     dfspbThirdpartySchemeAdapterOutbound: 'http://localhost:6006',
 
-    pispSchemeAdapter: `${baseUrl}/pispa/thirdparty-scheme-adapter/outbound`,
+    pispSchemeAdapter: `http://${baseUrl}/pispa/thirdparty-scheme-adapter/outbound`,
     pispThirdpartySchemeAdapterInbound: 'http://localhost:7005',
     pispThirdpartySchemeAdapterOutbound: 'http://localhost:7006',
     pispContractSchemeAdapter: 'http://localhost:8002',

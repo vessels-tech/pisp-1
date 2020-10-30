@@ -1,5 +1,6 @@
 import * as SDKStandardComponents from '@mojaloop/sdk-standard-components'
 
+
 export interface GlobalConfig {
   currency: SDKStandardComponents.TCurrency,
   // Urls to talk to services
@@ -55,7 +56,8 @@ export interface PISPParticipant {
 }
 
 // TODO: parse config with convict or something
-const baseUrl = process.env.ELB_URL
+const baseUrl = process.env.ELB_URL!
+const pispCallbackUrl = process.env.PISP_CB_URL!
 const scheme = `http`
 const currency = 'USD'
 
@@ -166,8 +168,8 @@ const config: GlobalConfig = {
       // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
       // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
       // Location of demo server on localtunnel
-      fspiopCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`,
-      thirdpartyCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`
+      fspiopCallbackUrl: `${pispCallbackUrl}/mojaloop`,
+      thirdpartyCallbackUrl: `${pispCallbackUrl}/mojaloop`,
     },
     // Add another participant: pisp
     // this is hardcoded in the sdk-scheme-adapter postAuthorizations
@@ -178,8 +180,8 @@ const config: GlobalConfig = {
       // fspiopCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`,
       // thirdpartyCallbackUrl: `${scheme}://${baseUrl}/pispa/thirdparty-scheme-adapter/inbound`
       // Location of demo server on localtunnel
-      fspiopCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop`,
-      thirdpartyCallbackUrl: `https://slimy-cheetah-89.loca.lt/mojaloop/`
+      fspiopCallbackUrl: `${pispCallbackUrl}/mojaloop`,
+      thirdpartyCallbackUrl: `${pispCallbackUrl}/mojaloop`,
     },
   ]
 }
