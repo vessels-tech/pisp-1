@@ -1,6 +1,6 @@
 {
   "VERSION": 1,
-  "CALLBACK_ENDPOINT": "http://mojaloop.pisp-demo-server.local:8080/mojaloop2",
+  "CALLBACK_ENDPOINT": "http://beta.moja-lab.live/pineapple/mojaloop",
   "CALLBACK_RESOURCE_ENDPOINTS": {
     "enabled": false,
     "endpoints": [
